@@ -33,7 +33,10 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
                 child: _buildOrderSection(ref),
               ),
               CommonButtonWidget(
-                  callBack: () => context.go('/auth'), label: 'Log out')
+                  callBack: () {
+                    app_config.clearUser();
+                    context.go('/auth');
+                  }, label: 'Log out')
             ],
           ),
         ),

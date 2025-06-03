@@ -1,3 +1,4 @@
+import 'package:async/async.dart';
 import 'package:dio/dio.dart';
 import '../data/config/app_config.dart';
 import '../data/model/auth_user.dart';

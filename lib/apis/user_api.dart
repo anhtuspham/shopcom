@@ -19,12 +19,14 @@ mixin UserApi on BaseApi {
       return [];
     }
   }
-  
-  Future<User> getUserInfo() async{
-    Result result = await handleRequest(request: () => get('/api/users/profile'),);
-    try{
+
+  Future<User> getUserInfo() async {
+    Result result = await handleRequest(
+      request: () => get('/api/users/profile'),
+    );
+    try {
       return User.fromJson(result.asValue!.value);
-    }catch(e){
+    } catch (e) {
       app_config.printLog("e", " API_FETCH_USER_INFO : ${e.toString()}");
       return User.empty();
     }
@@ -55,6 +57,15 @@ mixin UserApi on BaseApi {
     );
   }
 
+  Future<Result> signup(
+      {required String name,
+      required String email,
+      required String password}) async {
+    return handleRequest(
+        request: () => post('/api/users/register',
+            data: {'name': name, 'email': email, 'password': password}));
+  }
+
   Future<Result> editUser({
     String? email,
     String? name,
@@ -74,12 +85,10 @@ mixin UserApi on BaseApi {
     );
   }
 
-
-  Future<Result> changePassword({
-    required String confirmPassword,
-    required String oldPassword,
-    required String newPassword
-  }) async {
+  Future<Result> changePassword(
+      {required String confirmPassword,
+      required String oldPassword,
+      required String newPassword}) async {
     return handleRequest(
       request: () => put(
         '/User/changePassword',

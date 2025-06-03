@@ -7,6 +7,8 @@ import 'package:go_router/go_router.dart';
 import 'package:shop_com/providers/order_detail_provider.dart';
 import 'package:shop_com/providers/product_detail_provider.dart';
 import 'package:shop_com/screens/account/screen/account_screen.dart';
+import 'package:shop_com/screens/auth/screen/otp_verify_screen.dart';
+import 'package:shop_com/screens/auth/screen/signup_screen.dart';
 import 'package:shop_com/screens/cart/screen/cart_screen.dart';
 import 'package:shop_com/screens/favorite/screen/favorite_screen.dart';
 import 'package:shop_com/screens/product_detail/screen/product_detail_screen.dart';
@@ -32,7 +34,7 @@ final GlobalKey<NavigatorState> _shellNavigatorKey =
 FutureOr<String?> systemRedirect(BuildContext context, GoRouterState state) {
   AuthUser? user = app_config.user;
   if (user == null) {
-    if (state.fullPath!.compareTo("/auth") != 0) {
+    if (state.fullPath!.compareTo("/auth") != 0 && state.fullPath != '/signup') {
       return '/auth';
     }
   }
@@ -49,6 +51,21 @@ GoRouter genRoute() {
         return const LoginScreen();
       });
 
+  GoRoute screenSignup = GoRoute(
+      path: '/signup',
+      name: 'signup',
+      builder: (BuildContext context, GoRouterState state) {
+        return const SignupScreen();
+      });
+
+  GoRoute screenVerifyOtp = GoRoute(
+    path: '/verifyOtp',
+    name: 'verifyOtp',
+    builder: (BuildContext context, GoRouterState state){
+      return const OtpVerifyScreen();
+    }
+  );
+
   List<GoRoute> groupHome = [];
 
   GoRouter router = GoRouter(
@@ -56,6 +73,8 @@ GoRouter genRoute() {
       initialLocation: '/home',
       routes: [
         screenLogin,
+        screenSignup,
+        screenVerifyOtp,
         ShellRoute(
           navigatorKey: _shellNavigatorKey,
           builder: (context, state, child) => HomeScreen(child: child),
