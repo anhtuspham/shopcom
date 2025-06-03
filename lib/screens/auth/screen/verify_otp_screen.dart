@@ -3,17 +3,22 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
+
+import '../../../data/config/app_config.dart';
 
 int timeExpireOTP = 300;
 
-class OtpVerifyScreen extends StatefulWidget {
-  const OtpVerifyScreen({super.key});
+class VerifyOtpScreen extends StatefulWidget {
+  final String email;
+
+  const VerifyOtpScreen({super.key, required this.email});
 
   @override
-  State<OtpVerifyScreen> createState() => _OtpVerifyScreenState();
+  State<VerifyOtpScreen> createState() => _VerifyOtpScreenState();
 }
 
-class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
+class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
   late List<TextEditingController> _controllers;
   late List<FocusNode> _focusNodes;
   int _remainingTime = timeExpireOTP;
@@ -99,7 +104,9 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
                       child: TextField(
                         controller: _controllers[index],
                         focusNode: _focusNodes[index],
-                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
                         maxLength: 1,
                         keyboardType: TextInputType.number,
                         textAlign: TextAlign.center,
@@ -139,11 +146,33 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
               ),
               ElevatedButton(
                   onPressed: _isOtpComplete() == true
-                      ? () {
+                      ? () async {
                           final otp = _controllers
                               .map((controller) => controller.text)
                               .join();
-                          print('otp: $otp');
+                          final result = await api.verifyOtpEmail(
+                              email: widget.email, otp: otp);
+                          if(!context.mounted) return;
+                          if (mounted && result.isValue == true) {
+                            if(!context.mounted) return;
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(const SnackBar(
+                              content: Text("Xác thực thành công, vui lòng đăng nhập"),
+                              backgroundColor: Colors.green,
+                            ));
+                            reloadApiUrl();
+                            if (mounted) {
+                              context.goNamed("auth");
+                            }
+                            // Future.microtask(() => context.go("/tab1"));
+                          } else {
+                            if (!mounted) return;
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(const SnackBar(
+                              content: Text("Xác thực OTP thất bại"),
+                              backgroundColor: Colors.red,
+                            ));
+                          }
                         }
                       : null,
                   style: ElevatedButton.styleFrom(

@@ -181,18 +181,17 @@ class _SignupScreen extends State<SignupScreen> {
     final user = await api.signup(name: _name, email: _email, password: _password);
     if (mounted && user.isValue == true) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("Sign up success"),
+        content: Text("Đăng kí tài khoản thành công"),
         backgroundColor: Colors.green,
       ));
       reloadApiUrl();
       if (mounted) {
-        context.goNamed("auth");
+        context.goNamed("verifyOtp", extra: _email);
       }
-      // Future.microtask(() => context.go("/tab1"));
     } else {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("Sign up failed"),
+        content: Text("Đăng kí tài khoản thất bại"),
         backgroundColor: Colors.red,
       ));
     }

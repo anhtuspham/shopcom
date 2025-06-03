@@ -66,6 +66,21 @@ mixin UserApi on BaseApi {
             data: {'name': name, 'email': email, 'password': password}));
   }
 
+  Future<Result> verifyOtpEmail({
+    String? email,
+    String? otp,
+  }) async {
+    return handleRequest(
+      request: () => post(
+        '/api/users/verify-otp',
+        data: {
+          'email': email,
+          'otp': otp,
+        },
+      ),
+    );
+  }
+
   Future<Result> editUser({
     String? email,
     String? name,
