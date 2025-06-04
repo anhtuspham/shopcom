@@ -109,11 +109,11 @@ class _OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
+        const Text(
           'Order Information',
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
         ),
-        SizedBox(height: 12),
+        const SizedBox(height: 12),
         CustomHeaderInfo(
             title: 'Shipping Address',
             value: state.order.address ?? '',

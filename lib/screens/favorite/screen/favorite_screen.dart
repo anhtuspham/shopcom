@@ -17,9 +17,11 @@ class _FavoritesScreenState extends ConsumerState<FavoritesScreen> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() {
-      ref.read(favoriteProvider.notifier).fetchFavorite();
-    },);
+    Future.microtask(
+      () {
+        ref.read(favoriteProvider.notifier).fetchFavorite();
+      },
+    );
   }
 
   @override
@@ -70,21 +72,20 @@ class _FavoritesScreenState extends ConsumerState<FavoritesScreen> {
     }
 
     return ListView.separated(
-      padding: const EdgeInsets.all(16),
-      itemCount: state.favorite.length,
-      separatorBuilder: (context, index) => const SizedBox(height: 16),
-      // itemBuilder: (context, index) => _buildFavoriteItem(context, favoriteProducts[index]),
-      itemBuilder: (context, index) => ProductBagItem(
-          productId: state.favorite[index].id ?? '',
-          index: index,
-          isFavorite: true,
-          imageUrl: state.favorite[index].defaultVariant?.images?[0],
-          name: state.favorite[index].name,
-          color: state.favorite[index].defaultVariant?.color,
-          ram: state.favorite[index].defaultVariant?.ram,
-          price: state.favorite[index].defaultVariant?.price,
-      )
-    );
+        padding: const EdgeInsets.all(16),
+        itemCount: state.favorite.length,
+        separatorBuilder: (context, index) => const SizedBox(height: 16),
+        // itemBuilder: (context, index) => _buildFavoriteItem(context, favoriteProducts[index]),
+        itemBuilder: (context, index) => ProductBagItem(
+              productId: state.favorite[index].id ?? '',
+              index: index,
+              isFavorite: true,
+              imageUrl: state.favorite[index].defaultVariant?.images?[0],
+              name: state.favorite[index].name,
+              color: state.favorite[index].defaultVariant?.color,
+              ram: state.favorite[index].defaultVariant?.ram,
+              price: state.favorite[index].defaultVariant?.price,
+              showToggleFavorite: true,
+            ));
   }
 }
-

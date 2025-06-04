@@ -19,6 +19,7 @@ class ProductBagItem extends ConsumerStatefulWidget {
   final String? ram;
   final String? rom;
   final bool? isFavorite;
+  final bool? showToggleFavorite;
   final int index;
 
   const ProductBagItem(
@@ -34,7 +35,8 @@ class ProductBagItem extends ConsumerStatefulWidget {
       this.rom,
       this.price,
       required this.index,
-      this.isFavorite = false});
+      this.isFavorite = false,
+      this.showToggleFavorite = false});
 
   @override
   ConsumerState<ProductBagItem> createState() => _ProductBagItemState();
@@ -84,6 +86,7 @@ class _ProductBagItemState extends ConsumerState<ProductBagItem> {
                     await ref.read(cartProvider.notifier).removeProductFromCart(
                         productId: widget.productId,
                         variantIndex: widget.variantIndex ?? 0);
+                    if (!context.mounted) return;
                     if (mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
@@ -112,13 +115,9 @@ class _ProductBagItemState extends ConsumerState<ProductBagItem> {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Container(
+            SizedBox(
               width: 120,
               height: 140,
-              // decoration: BoxDecoration(
-              //   color: Colors.grey[200],
-              //   borderRadius: BorderRadius.circular(12),
-              // ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),
                 child: Image.network(
@@ -157,26 +156,25 @@ class _ProductBagItemState extends ConsumerState<ProductBagItem> {
                             ),
                           ),
                           const SizedBox(height: 8),
-                          IconButton(
-                            onPressed: () {},
+                          widget.showToggleFavorite == true ? IconButton(
+                            onPressed: widget.isFavorite == true
+                                ? () async {
+                                    await ref
+                                        .read(favoriteProvider.notifier)
+                                        .removeProductFromFavorite(
+                                            productId: widget.productId);
+                                    if (!mounted) return;
+                                    // ref.invalidate(favoriteProvider);
+                                  }
+                                : null,
                             icon: widget.isFavorite == true
-                                ? InkWell(
-                                    onTap: () async {
-                                      await ref
-                                          .read(favoriteProvider.notifier)
-                                          .removeProductFromFavorite(
-                                              productId: widget.productId);
-                                      if (!mounted) return;
-                                      ref.invalidate(favoriteProvider);
-                                    },
-                                    child: const Icon(
-                                      Icons.favorite,
-                                      color: Colors.red,
-                                    ),
+                                ? const Icon(
+                                    Icons.favorite,
+                                    color: Colors.red,
                                   )
                                 : const Icon(Icons.favorite_border_outlined),
                             constraints: const BoxConstraints(),
-                          )
+                          ) : const Offstage()
                         ],
                       ),
                       const SizedBox(
@@ -191,21 +189,16 @@ class _ProductBagItemState extends ConsumerState<ProductBagItem> {
                         'Ram ${widget.ram}',
                         style: TextStyle(color: Colors.grey[600], fontSize: 12),
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                              formatMoney(widget.price ?? 0,
-                                  ref.watch(currencyProvider)),
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              )),
-                          widget.isFavorite == true
-                              ? _buildAddCartButton()
-                              : _buildQuantityControl()
-                        ],
-                      )
+                      Text(
+                          formatMoney(
+                              widget.price ?? 0, ref.watch(currencyProvider)),
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          )),
+                      widget.isFavorite == true
+                          ? _buildAddCartButton()
+                          : _buildQuantityControl()
                     ],
                   );
                 },
@@ -233,26 +226,8 @@ class _ProductBagItemState extends ConsumerState<ProductBagItem> {
 
   Widget _buildQuantityControl() {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        IconButton(
-          icon: const Icon(Icons.add),
-          onPressed: _increment,
-          color: Colors.grey[600],
-          style: const ButtonStyle(
-              backgroundColor: WidgetStatePropertyAll(Colors.white),
-              shape: WidgetStatePropertyAll(
-                  CircleBorder(side: BorderSide(color: Colors.black12)))),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(1.0),
-          child: ValueListenableBuilder(
-            valueListenable: countProduct,
-            builder: (context, value, child) {
-              return Text('$value');
-            },
-          ),
-        ),
-        // const Spacer(),
         ValueListenableBuilder(
           valueListenable: countProduct,
           builder: (context, value, child) {
@@ -261,12 +236,38 @@ class _ProductBagItemState extends ConsumerState<ProductBagItem> {
               onPressed: countProduct.value > 1 ? _decrement : null,
               color: Colors.grey[600],
               style: const ButtonStyle(
-                  backgroundColor: WidgetStatePropertyAll(Colors.white),
-                  shape: WidgetStatePropertyAll(
-                      CircleBorder(side: BorderSide(color: Colors.black12)))),
+                  backgroundColor: WidgetStatePropertyAll(Color(0xfff1efef)),
+                  shape: WidgetStatePropertyAll(RoundedRectangleBorder(
+                      side: BorderSide(color: Colors.black12),
+                      borderRadius: BorderRadius.all(Radius.circular(8))))),
             );
           },
-        )
+        ),
+        Padding(
+          padding: const EdgeInsets.all(1.0),
+          child: ValueListenableBuilder(
+            valueListenable: countProduct,
+            builder: (context, value, child) {
+              return SizedBox(
+                  width: 25,
+                  child: Text(
+                    '$value',
+                    textAlign: TextAlign.center,
+                  ));
+            },
+          ),
+        ),
+        // const Spacer(),
+        IconButton(
+          icon: const Icon(Icons.add),
+          onPressed: _increment,
+          color: Colors.grey[600],
+          style: const ButtonStyle(
+              backgroundColor: WidgetStatePropertyAll(Color(0xfff1efef)),
+              shape: WidgetStatePropertyAll(RoundedRectangleBorder(
+                  side: BorderSide(color: Colors.black12),
+                  borderRadius: BorderRadius.all(Radius.circular(8))))),
+        ),
       ],
     );
   }
@@ -274,24 +275,37 @@ class _ProductBagItemState extends ConsumerState<ProductBagItem> {
   Future<void> _increment() async {
     countProduct.value++;
     final notifier = ref.read(cartProvider.notifier);
-    await notifier.addProductToCart(
+    final result = await notifier.addProductToCart(
         productId: widget.productId,
         variantIndex: widget.variantIndex ?? 0,
         quantity: 1);
     if (!mounted) return;
-    ref.invalidate(cartProvider);
+    if (result == false) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Không đủ sản phẩm trong kho'),
+        backgroundColor: Colors.red,
+      ));
+      ref.invalidate(cartProvider);
+    }
+    // ref.invalidate(cartProvider);
   }
 
   Future<void> _decrement() async {
     if (countProduct.value > 1) {
       countProduct.value--;
       final notifier = ref.read(cartProvider.notifier);
-      await notifier.addProductToCart(
+      final result = await notifier.addProductToCart(
           productId: widget.productId,
           variantIndex: widget.variantIndex ?? 0,
           quantity: -1);
       if (!mounted) return;
-      ref.invalidate(cartProvider);
+      if (result == false) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('Không đủ sản phẩm trong kho'),
+          backgroundColor: Colors.red,
+        ));
+        ref.invalidate(cartProvider);
+      }
     }
   }
 }

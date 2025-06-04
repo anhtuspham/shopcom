@@ -50,7 +50,7 @@ class FavoriteNotifier extends StateNotifier<FavoriteState> {
   Future<bool> addProductToFavorite({
     required String productId,
   }) async {
-    state = state.copyWith(isLoading: true, isError: false);
+    state = state.copyWith(isLoading: false, isError: false);
     try{
       final result = await api.addProductFavorite(
           productId: productId);
@@ -70,7 +70,7 @@ class FavoriteNotifier extends StateNotifier<FavoriteState> {
   Future<bool> removeProductFromFavorite({
     required String productId,
   }) async {
-    state = state.copyWith(isLoading: true, isError: false);
+    state = state.copyWith(isLoading: false, isError: false);
     try {
       final result = await api.removeProductFavorite(
           productId: productId);

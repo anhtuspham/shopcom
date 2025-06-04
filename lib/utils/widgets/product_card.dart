@@ -137,7 +137,7 @@ class _ProductCardState extends ConsumerState<ProductCard> {
                                       .removeProductFromFavorite(
                                           productId: widget.id);
                               if (!mounted) return;
-                              ref.invalidate(favoriteProvider);
+                              // ref.invalidate(favoriteProvider);
                             },
                             child: Icon(
                               widget.isFavorite == false

@@ -31,6 +31,7 @@ class CartNotifier extends StateNotifier<CartState> {
   CartNotifier() : super(CartState.initial());
 
   Future<void> fetchCart() async {
+    print('fetchCart: ');
     if (state.isLoading) return;
     state = state.copyWith(isLoading: true, isError: false);
     try {
@@ -52,7 +53,7 @@ class CartNotifier extends StateNotifier<CartState> {
     required int variantIndex,
     required int quantity,
   }) async {
-    state = state.copyWith(isLoading: true, isError: false);
+    state = state.copyWith(isLoading: false, isError: false);
     try{
       final result = await api.addProductToCart(
           productId: productId, variantIndex: variantIndex, quantity: quantity);
@@ -73,7 +74,7 @@ class CartNotifier extends StateNotifier<CartState> {
     required String productId,
     required int variantIndex
   }) async {
-    state = state.copyWith(isLoading: true, isError: false);
+    state = state.copyWith(isLoading: false, isError: false);
     try {
       final result = await api.removeProductFromCart(
           productId: productId, variantIndex: variantIndex);
