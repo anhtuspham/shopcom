@@ -125,7 +125,7 @@ class _SignupScreen extends State<SignupScreen> {
                 Align(
                   alignment: Alignment.centerRight,
                   child: TextButton(
-                    onPressed: () => context.goNamed('auth'),
+                    onPressed: () => context.goNamed('login'),
                     child: const Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [

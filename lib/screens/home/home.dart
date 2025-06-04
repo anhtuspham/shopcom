@@ -8,8 +8,8 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: child, // Hiển thị màn hình con dựa theo router
-      bottomNavigationBar: BottomNavBar(),
+      body: child,
+      bottomNavigationBar: const BottomNavBar(),
     );
   }
 }

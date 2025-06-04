@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shop_com/providers/cart_provider.dart';
 import 'package:shop_com/providers/currency_provider.dart';
 import 'package:shop_com/providers/order_provider.dart';
@@ -41,32 +42,34 @@ class _CartScreenState extends ConsumerState<CartScreen> {
       _isProcessingOrder = true;
     });
 
-    try {
-      await ref.read(orderProvider.notifier).createOrder(
-          couponCode: _couponCode.value.isNotEmpty ? _couponCode.value : null);
+    context.pushNamed('checkout');
 
-      await ref.read(cartProvider.notifier).refresh();
-      // await ref.read(orderProvider.notifier).refresh();
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Đặt hàng thành công'),
-          backgroundColor: Colors.green,
-        ));
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('Đặt hàng thất bại: ${e.toString()}'),
-          backgroundColor: Colors.red,
-        ));
-      }
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isProcessingOrder = false;
-        });
-      }
-    }
+    // try {
+    //   await ref.read(orderProvider.notifier).createOrder(
+    //       couponCode: _couponCode.value.isNotEmpty ? _couponCode.value : null);
+    //
+    //   await ref.read(cartProvider.notifier).refresh();
+    //   // await ref.read(orderProvider.notifier).refresh();
+    //   if (mounted) {
+    //     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+    //       content: Text('Đặt hàng thành công'),
+    //       backgroundColor: Colors.green,
+    //     ));
+    //   }
+    // } catch (e) {
+    //   if (mounted) {
+    //     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    //       content: Text('Đặt hàng thất bại: ${e.toString()}'),
+    //       backgroundColor: Colors.red,
+    //     ));
+    //   }
+    // } finally {
+    //   if (mounted) {
+    //     setState(() {
+    //       _isProcessingOrder = false;
+    //     });
+    //   }
+    // }
   }
 
   @override
@@ -172,12 +175,12 @@ class _CartScreenState extends ConsumerState<CartScreen> {
               SizedBox(
                   width: double.infinity,
                   child: CommonButtonWidget(
-                    callBack: _handleCheckout,
+                    callBack: state.cart.products!.isEmpty ? null : _handleCheckout,
                     label: _isProcessingOrder ? 'PROCESSING...' : 'CHECK OUT',
                     style: const TextStyle(color: Colors.white),
                     buttonStyle: ButtonStyle(
                         backgroundColor: WidgetStatePropertyAll(
-                            _isProcessingOrder ? Colors.grey : Colors.black)),
+                            (_isProcessingOrder || state.cart.products!.isEmpty) ? Colors.grey : Colors.black)),
                   ))
             ],
           ),

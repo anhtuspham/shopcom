@@ -176,7 +176,7 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     }
     _formKey.currentState!.save();
-    final user = await userController.login(_email, _password);
+    final user = await authProvider.login(_email, _password);
     if (mounted && user != null) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Login success"),

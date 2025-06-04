@@ -39,10 +39,11 @@ class _OrderItemState extends ConsumerState<OrderItem> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8), color: Colors.white, border: Border.all(color: Colors.grey)),
+          borderRadius: BorderRadius.circular(8),
+          color: Colors.white,
+          border: Border.all(color: Colors.grey)),
       child: Padding(
-          padding:
-              const EdgeInsets.symmetric(horizontal: 10.0, vertical: 12.0),
+          padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 12.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             spacing: 3,
@@ -52,8 +53,8 @@ class _OrderItemState extends ConsumerState<OrderItem> {
                   title: 'Order time', value: widget.orderTime ?? ''),
               CustomHeaderInfo(
                   title: 'Total amount',
-                  value:
-                      formatMoney(widget.totalAmount ?? 0, ref.watch(currencyProvider)),
+                  value: formatMoney(
+                      widget.totalAmount ?? 0, ref.watch(currencyProvider)),
                   headerFontWeight: FontWeight.w700,
                   fontSize: 16,
                   valueFontWeight: FontWeight.w700),

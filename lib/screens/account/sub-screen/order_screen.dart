@@ -32,73 +32,71 @@ class _OrderScreenState extends ConsumerState<OrderScreen> {
       length: 4,
       child: Scaffold(
         appBar: const AppBarWidget(title: 'My Orders'),
-        body: SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 6.0, vertical: 12.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      TabBar(
-                        labelPadding: EdgeInsets.zero,
-                        labelColor: Colors.white,
-                        unselectedLabelColor: Colors.black,
-                        labelStyle:
-                            const TextStyle(fontWeight: FontWeight.bold),
-                        indicator: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16),
-                          color: Colors.black,
-                        ),
-                        unselectedLabelStyle:
-                            const TextStyle(fontWeight: FontWeight.w700),
-                        indicatorSize: TabBarIndicatorSize.label,
-                        tabs: const [
-                          Tab(
-                              child: Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 12, vertical: 4),
-                            child: Text('Pending'),
-                          )),
-                          Tab(
-                              child: Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 12, vertical: 4),
-                            child: Text('Processing'),
-                          )),
-                          Tab(
-                              child: Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 12, vertical: 4),
-                            child: Text('Delivered'),
-                          )),
-                          Tab(
-                              child: Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 12, vertical: 4),
-                            child: Text('Canceled'),
-                          )),
-                        ],
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 6.0, vertical: 12.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TabBar(
+                      labelPadding: EdgeInsets.zero,
+                      labelColor: Colors.white,
+                      unselectedLabelColor: Colors.black,
+                      labelStyle:
+                          const TextStyle(fontWeight: FontWeight.bold),
+                      indicator: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        color: Colors.black,
                       ),
-                      const SizedBox(height: 20),
-                      Expanded(
-                          child: TabBarView(
-                        children: [
-                          _buildOrderItemSection(state, 'pending'),
-                          _buildOrderItemSection(state, 'processing'),
-                          _buildOrderItemSection(state, 'delivered'),
-                          _buildOrderItemSection(state, 'cancelled')
-                        ],
-                      ))
-                    ],
-                  ),
+                      unselectedLabelStyle:
+                          const TextStyle(fontWeight: FontWeight.w700),
+                      indicatorSize: TabBarIndicatorSize.label,
+                      tabs: const [
+                        Tab(
+                            child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 4),
+                          child: Text('Pending'),
+                        )),
+                        Tab(
+                            child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 4),
+                          child: Text('Processing'),
+                        )),
+                        Tab(
+                            child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 4),
+                          child: Text('Delivered'),
+                        )),
+                        Tab(
+                            child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 4),
+                          child: Text('Canceled'),
+                        )),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    Expanded(
+                        child: TabBarView(
+                      children: [
+                        _buildOrderItemSection(state, 'pending'),
+                        _buildOrderItemSection(state, 'processing'),
+                        _buildOrderItemSection(state, 'delivered'),
+                        _buildOrderItemSection(state, 'cancelled')
+                      ],
+                    ))
+                  ],
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

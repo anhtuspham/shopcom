@@ -162,7 +162,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                             ));
                             reloadApiUrl();
                             if (mounted) {
-                              context.goNamed("auth");
+                              context.goNamed("login");
                             }
                             // Future.microtask(() => context.go("/tab1"));
                           } else {

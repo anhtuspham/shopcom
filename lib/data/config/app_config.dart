@@ -129,7 +129,7 @@ class AppConfig {
 }
 
 final AppConfig app_config = AppConfig();
-final AuthProvider userController = AuthProvider();
+final AuthProvider authProvider = AuthProvider();
 Api api = Api();
 
 void reloadApiUrl() {

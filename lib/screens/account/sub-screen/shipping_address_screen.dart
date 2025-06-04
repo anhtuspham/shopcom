@@ -120,7 +120,6 @@ class _ShippingAddressState extends ConsumerState<ShippingAddress> {
     });
 
     try {
-      print('name: $name address $address');
       await ref
           .read(userProvider.notifier)
           .updateUserInfo(email: emailController.text, name: nameController.text, address: addressController.text);
