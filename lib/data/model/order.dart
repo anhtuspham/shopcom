@@ -12,6 +12,7 @@ class Order {
   String? coupon;
   String? status;
   String? address;
+  bool? isPaid;
   String? paymentMethod;
   DateTime? createdAt;
 
@@ -27,6 +28,7 @@ class Order {
     this.coupon,
     this.status,
     this.address,
+    this.isPaid,
     this.paymentMethod,
     this.createdAt,
     this.v,
@@ -49,6 +51,7 @@ class Order {
     coupon: json["coupon"],
     status: json["status"],
     address: json["address"],
+    isPaid: json["isPaid"],
     paymentMethod: json["paymentMethod"],
     createdAt: DateTime.parse(json["createdAt"]),
     v: json["__v"],

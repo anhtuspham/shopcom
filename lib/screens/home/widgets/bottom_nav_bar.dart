@@ -33,7 +33,7 @@ class BottomNavBar extends StatelessWidget {
       items: const [
         BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
         BottomNavigationBarItem(icon: Icon(Icons.shopping_cart), label: "Shop"),
-        BottomNavigationBarItem(icon: Icon(Icons.shopping_bag), label: "My bag"),
+        BottomNavigationBarItem(icon: Icon(Icons.shopping_bag), label: "Cart"),
         BottomNavigationBarItem(icon: Icon(Icons.favorite), label: "Favorite"),
         BottomNavigationBarItem(icon: Icon(Icons.person), label: "Account"),
       ],

@@ -1,59 +1,92 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shop_com/data/config/app_config.dart';
 import 'package:shop_com/providers/user_provider.dart';
 import 'package:shop_com/utils/widgets/appbar_widget.dart';
 
+import '../../../providers/cart_provider.dart';
 import '../../../providers/currency_provider.dart';
 import '../../../utils/util.dart';
+import '../../../utils/widgets/button_widget.dart';
 import '../../../utils/widgets/custom_header_info.dart';
 
 class CheckoutScreen extends ConsumerStatefulWidget {
-  const CheckoutScreen({super.key});
+  final String couponCode;
+  const CheckoutScreen({super.key, required this.couponCode});
 
   @override
   ConsumerState<CheckoutScreen> createState() => _CheckoutScreenState();
 }
 
 class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
-  String _selectedPaymentMethod = 'cod';
+  String _selectedPaymentMethod = 'COD';
   String _selectedDeliveryMethod = 'GHN';
+  bool _isProcessingOrder = false;
   final List<Map<String, String>> paymentMethod = [
-    {'label': 'Thanh toán khi nhận hàng', 'value': 'cod'},
-    {'label': 'Thanh toán thẻ VISA', 'value': 'visa'},
-    {'label': 'Thanh toán qua Momo', 'value': 'momo'},
+    {'label': 'Thanh toán khi nhận hàng', 'value': 'COD'},
+    {'label': 'Thanh toán thẻ VISA', 'value': 'VISA'},
+    {'label': 'Thanh toán qua Momo', 'value': 'MOMO'},
   ];
 
   final List<Map<String, String>> deliveryMethod = [
     {'label': 'Giao hàng nhanh', 'value': 'GHN'},
   ];
-  
+
   @override
   Widget build(BuildContext context) {
     final userAsync = ref.watch(userProvider);
+    final currency = ref.watch(currencyProvider);
+    final cart = ref.watch(cartProvider);
 
     return Scaffold(
       appBar: const AppBarWidget(title: 'Check out'),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 20),
-        child: SingleChildScrollView(
-          child: Column(
-            // crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              _buildShippingSection(userAsync),
-              const SizedBox(height: 20),
-              _buildPaymentSection(),
-              const SizedBox(
-                height: 20,
+      body: LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+          return SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minHeight: constraints.maxHeight),
+              child: IntrinsicHeight(
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 20),
+                  child: Column(
+                    // crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      _buildShippingSection(userAsync),
+                      const SizedBox(height: 20),
+                      _buildPaymentSection(),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      _buildDeliveryMethodSection(),
+                      const SizedBox(height: 20),
+                      _buildCheckoutInfo(),
+                      const Spacer(),
+                      SizedBox(
+                          width: double.infinity,
+                          child: CommonButtonWidget(
+                            callBack: _isProcessingOrder ? null : _handleSubmitOrder,
+                            label: _isProcessingOrder
+                                ? 'PROCESSING...'
+                                : 'SUBMIT ORDER',
+                            style: const TextStyle(color: Colors.white),
+                            buttonStyle: ButtonStyle(
+                                backgroundColor: WidgetStatePropertyAll(
+                                    (_isProcessingOrder)
+                                        ? Colors.grey
+                                        : Colors.black)),
+                          ))
+                    ],
+                  ),
+                ),
               ),
-              _buildDeliveryMethodSection(),
-              const SizedBox(height: 20),
-              _buildCheckoutInfo()
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }
@@ -124,7 +157,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
             onChanged: (String? value) {
               setState(() {
                 print('value: $value');
-                _selectedPaymentMethod = value ?? 'cod';
+                _selectedPaymentMethod = value ?? 'COD';
               });
             },
           );
@@ -145,18 +178,18 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
         const SizedBox(height: 8),
         Column(
             children: deliveryMethod.map((delivery) {
-              return RadioListTile<String>(
-                title: Text(delivery['label'] ?? ''),
-                value: delivery['value'] ?? '',
-                groupValue: _selectedDeliveryMethod,
-                contentPadding: EdgeInsets.zero,
-                onChanged: (String? value) {
-                  setState(() {
-                    _selectedDeliveryMethod = value ?? 'GHN';
-                  });
-                },
-              );
-            }).toList())
+          return RadioListTile<String>(
+            title: Text(delivery['label'] ?? ''),
+            value: delivery['value'] ?? '',
+            groupValue: _selectedDeliveryMethod,
+            contentPadding: EdgeInsets.zero,
+            onChanged: (String? value) {
+              setState(() {
+                _selectedDeliveryMethod = value ?? 'GHN';
+              });
+            },
+          );
+        }).toList())
       ],
     );
   }
@@ -187,5 +220,107 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
             valueFontWeight: FontWeight.w700),
       ],
     );
+  }
+  Future<void> _handleSubmitOrder() async {
+    if (_isProcessingOrder) return;
+
+    setState(() {
+      _isProcessingOrder = true;
+    });
+
+    try {
+      if (_selectedPaymentMethod == 'VISA') {
+        await _makePayment(context);
+      } else {
+        // Handle other payment methods (e.g., COD, Momo)
+        final result = await api.createOrder(paymentMethod: _selectedPaymentMethod, couponCode: widget.couponCode);
+        if (result.isValue) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Đơn hàng đã được tạo thành công')),
+          );
+          context.go('/order'); // Navigate to orders screen
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Lỗi khi tạo đơn hàng: ${result.asError!.error}')),
+          );
+        }
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Lỗi: $e')),
+      );
+    } finally {
+      setState(() {
+        _isProcessingOrder = false;
+      });
+    }
+  }
+
+
+  Future<void> _makePayment(BuildContext context) async {
+    final cart = ref.watch(cartProvider);
+    try {
+      // Use the total amount from checkout info (in cents)
+      double totalAmount = (cart.cart.totalPrice ?? 0);
+      final currency = ref.watch(currencyProvider).name ?? 'usd';
+      if(currency == 'vnd') totalAmount = ((cart.cart.totalPrice ?? 0) * 25980).roundToDouble();
+      final paymentIntentData = await api.createPaymentIntent(totalAmount, currency);
+
+      if (kDebugMode) {
+        print('PaymentIntent response: $paymentIntentData');
+      }
+
+      if (paymentIntentData == null || paymentIntentData['clientSecret'] == null) {
+        throw Exception('Không thể tạo PaymentIntent: response is null');
+      }
+
+      await Stripe.instance.initPaymentSheet(
+        paymentSheetParameters: SetupPaymentSheetParameters(
+          merchantDisplayName: 'Thanh toán qua Stripe',
+          paymentIntentClientSecret: paymentIntentData['clientSecret'],
+          googlePay: const PaymentSheetGooglePay(
+            merchantCountryCode: 'US',
+            testEnv: true,
+          ),
+          style: ThemeMode.dark,
+          // paymentMethodOrder: ['card'], // Explicitly specify card payment
+        ),
+      );
+
+      await _displayPaymentSheet(context);
+    } catch (e) {
+      if (kDebugMode) {
+        print('Payment error: ${e.toString()}');
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Lỗi thanh toán: $e')),
+      );
+      rethrow;
+    }
+  }
+
+  Future<void> _displayPaymentSheet(BuildContext context) async {
+    try {
+      await Stripe.instance.presentPaymentSheet();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Thanh toán thành công')),
+      );
+      // Create order after successful payment
+      final result = await api.createOrder(paymentMethod: _selectedPaymentMethod, couponCode: widget.couponCode, isPaid: true);
+      if (result.isValue) {
+        context.go('/order'); // Navigate to orders screen
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Lỗi khi tạo đơn hàng: ${result.asError!.error}')),
+        );
+      }
+    } on StripeException catch (e) {
+      if (kDebugMode) {
+        print('Stripe error: $e');
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Lỗi thanh toán: ${e.error.localizedMessage}')),
+      );
+    }
   }
 }

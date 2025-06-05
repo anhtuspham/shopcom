@@ -118,7 +118,10 @@ GoRouter genRoute() {
             GoRoute(
               path: '/checkout',
               name: 'checkout',
-              builder: (context, state) => const CheckoutScreen(),
+              builder: (context, state){
+                final couponCode = state.extra as String;
+                return CheckoutScreen(couponCode: couponCode);
+              },
             ),
             GoRoute(
               path: '/order',

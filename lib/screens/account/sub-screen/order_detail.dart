@@ -126,9 +126,14 @@ class _OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
         SizedBox(height: 8),
         const CustomHeaderInfo(
             title: 'Delivery Method',
-            value: 'Fast Delivery',
+            value: 'Giao hàng nhanh',
             valueFontWeight: FontWeight.w700),
         const SizedBox(height: 8),
+        CustomHeaderInfo(
+            title: 'Tình trạng',
+            value: state.order.isPaid == true ? 'Đã thanh toán' : 'Chưa thanh toán',
+            valueFontWeight: FontWeight.w700),
+        SizedBox(height: 8),
         CustomHeaderInfo(
             title: 'Total Amount',
             value: formatMoney(

@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_com/providers/product_provider.dart';
@@ -16,8 +17,10 @@ import 'data/config/app_config.dart';
 late GoRouter system_router;
 
 Future<void> main() async {
+  Stripe.publishableKey = 'pk_test_51Po5Wv2KP4TOic3pyCdePXDudO8U7fqCQRKkwz2k7IAqPxFuzD9jneVulMQX0hSQt6cPZ3tz1LSkRvgVpIUqldFb00FXTryFMO';
   WidgetsFlutterBinding.ensureInitialized();
   system_router = genRoute();
+  // await Stripe.instance.applySettings();
   app_config.init().then((value) {
     try {
       system_router = genRoute();

@@ -42,7 +42,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
       _isProcessingOrder = true;
     });
 
-    context.pushNamed('checkout');
+    context.pushNamed('checkout', extra: _couponCode.value);
 
     // try {
     //   await ref.read(orderProvider.notifier).createOrder(

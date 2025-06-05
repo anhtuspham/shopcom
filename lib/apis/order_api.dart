@@ -1,4 +1,5 @@
 import 'package:async/async.dart';
+import 'package:flutter/foundation.dart';
 import 'package:shop_com/apis/base_api.dart';
 
 import '../data/config/app_config.dart';
@@ -36,10 +37,10 @@ mixin OrderApi on BaseApi {
   }
 
   Future<Result> createOrder(
-      {String? paymentMethod, String? couponCode}) async {
+      {String? paymentMethod, String? couponCode, bool? isPaid}) async {
     return handleRequest(
         request: () => post('/api/order',
-            data: {"paymentMethod": paymentMethod, "couponCode": couponCode}));
+            data: {"paymentMethod": paymentMethod, "couponCode": couponCode, "isPaid": isPaid}));
   }
 
   Future<Order> fetchOrderDetail({required String orderId}) async {
@@ -53,15 +54,22 @@ mixin OrderApi on BaseApi {
     }
   }
 
-// Future<Result> removeProductFromOrder({
-//   required String productId,
-//   required int variantIndex,
-// }) {
-//   return handleRequest(
-//     request: () => post('api/cart/remove-product-cart', data: {
-//       "productId": productId,
-//       "variantIndex": variantIndex,
-//     }),
-//   );
-// }
+  dynamic createPaymentIntent(double amount, String currency) async {
+    Result result = await handleRequest(
+      request: () => post('/api/order/create-payment-intent',
+          data: {'amount': amount, 'currency': currency}),
+    );
+
+    try {
+      if (result.isValue) {
+        return result.asValue!.value;
+      } else {
+        throw Exception('Failed to create PaymentIntent: ${result.asError!.error}');
+      }
+    } catch (error) {
+      if(kDebugMode){
+        print(error);
+      }
+    }
+  }
 }
