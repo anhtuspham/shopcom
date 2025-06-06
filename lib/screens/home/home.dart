@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shop_com/screens/home/widgets/bottom_nav_bar.dart';
 
+import '../../utils/color_value_key.dart';
 import '../chatbot/chatbot_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -23,7 +24,7 @@ class HomeScreen extends StatelessWidget {
             builder: (context) => const ChatbotScreen(),
           );
         },
-        // backgroundColor: ColorValueKey.textColor,
+        backgroundColor: ColorValueKey.textColor,
         child: const Icon(Icons.chat, color: Colors.white),
       ),
     );
