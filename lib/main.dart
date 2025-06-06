@@ -20,7 +20,6 @@ Future<void> main() async {
   Stripe.publishableKey = 'pk_test_51Po5Wv2KP4TOic3pyCdePXDudO8U7fqCQRKkwz2k7IAqPxFuzD9jneVulMQX0hSQt6cPZ3tz1LSkRvgVpIUqldFb00FXTryFMO';
   WidgetsFlutterBinding.ensureInitialized();
   system_router = genRoute();
-  // await Stripe.instance.applySettings();
   app_config.init().then((value) {
     try {
       system_router = genRoute();
