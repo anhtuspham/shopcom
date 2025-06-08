@@ -142,7 +142,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
           child: SizedBox(
             height: 280,
             child: ListView.separated(
-              itemCount: products.length,
+              itemCount: products.length > 5 ? 5 : products.length,
               itemBuilder: (context, index) {
                 final product = products[index];
                 return ProductCard(
