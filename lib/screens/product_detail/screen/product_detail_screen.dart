@@ -315,7 +315,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
           child: DropdownButtonHideUnderline(
             child: DropdownButton<String>(
               value: items.contains(selected) ? selected : null,
-              hint: const Text('Select'),
+              hint: const Text('Chọn'),
               isExpanded: true,
               borderRadius: const BorderRadius.all(Radius.circular(8)),
               onChanged: (value) => onChanged(value!),
@@ -386,7 +386,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
           );
         }
       },
-      label: 'Add to cart',
+      label: 'Thêm vào giỏ hàng',
       style: const TextStyle(color: Colors.white),
       buttonStyle: const ButtonStyle(
         backgroundColor: WidgetStatePropertyAll(Colors.black),
@@ -398,12 +398,12 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
     return Column(
       children: [
         ListTile(
-          title: const Text('Reviews'),
+          title: const Text('Đánh giá'),
           trailing: const Icon(Icons.keyboard_arrow_right),
           onTap: () => context.push('/review', extra: state.product),
         ),
         const ListTile(
-          title: Text('Support'),
+          title: Text('Hỗ trợ'),
           trailing: Icon(Icons.keyboard_arrow_right),
         ),
       ],

@@ -46,7 +46,7 @@ class _ShippingAddressState extends ConsumerState<ShippingAddress> {
     addressController = TextEditingController(text: state.user.address);
 
     return Scaffold(
-      appBar: const AppBarWidget(title: 'Shipping Address'),
+      appBar: const AppBarWidget(title: 'Địa chỉ giao hàng'),
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -64,8 +64,8 @@ class _ShippingAddressState extends ConsumerState<ShippingAddress> {
                       Column(
                         children: [
                           InputForm(
-                            labelText: 'Full name',
-                            hintText: 'Full name',
+                            labelText: 'Tên khách hàng',
+                            hintText: 'Tên khách hàng',
                             controller: nameController,
                             // initialValue: state.user.name,
                             onSaved: (newValue) => name = newValue,
@@ -80,7 +80,7 @@ class _ShippingAddressState extends ConsumerState<ShippingAddress> {
                           ),
                           const SizedBox(height: 20),
                           InputForm(
-                            labelText: 'Address',
+                            labelText: 'Địa chỉ',
                             hintText: 'Ho Chi Minh city',
                             controller: addressController,
                             // initialValue: state.user.address,
@@ -93,8 +93,8 @@ class _ShippingAddressState extends ConsumerState<ShippingAddress> {
                           child: CommonButtonWidget(
                             callBack: _handleUpdateInfo,
                             label: _isProcessingSave
-                                ? 'PROCESSING...'
-                                : 'SAVE ADDRESS',
+                                ? 'ĐANG XỬ LÝ...'
+                                : 'Lưu thông tin',
                             style: const TextStyle(color: Colors.white),
                             buttonStyle: ButtonStyle(
                                 backgroundColor: WidgetStatePropertyAll(

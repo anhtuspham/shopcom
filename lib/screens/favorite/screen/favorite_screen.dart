@@ -33,7 +33,7 @@ class _FavoritesScreenState extends ConsumerState<FavoritesScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Favorites',
+          'Yêu thích',
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
@@ -60,7 +60,7 @@ class _FavoritesScreenState extends ConsumerState<FavoritesScreen> {
             const Icon(Icons.favorite_border, size: 64, color: Colors.grey),
             const SizedBox(height: 16),
             Text(
-              'No favorites yet',
+              'Không có sản phẩm',
               style: TextStyle(
                 fontSize: 18,
                 color: Colors.grey[600],

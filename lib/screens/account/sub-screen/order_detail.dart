@@ -36,7 +36,7 @@ class _OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
     if (state.isError) return const ErrorsWidget();
 
     return Scaffold(
-      appBar: const AppBarWidget(title: 'Order Details'),
+      appBar: const AppBarWidget(title: 'Chi tiết đơn hàng'),
       body: SafeArea(
         child: Column(
           children: [
@@ -53,7 +53,7 @@ class _OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
                     const SizedBox(height: 20),
                     _buildOrderInformation(state),
                     const SizedBox(height: 20),
-                    _buildButtonSection()
+                    // _buildButtonSection()
                   ],
                 ),
               ),
@@ -69,11 +69,11 @@ class _OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
       children: [
         CustomHeaderInfo(title: 'OrderID', value: state.order.id ?? ''),
         CustomHeaderInfo(
-            title: 'Order time',
+            title: 'Thời gian đặt hàng',
             value: getStringFromDateTime(
                 state.order.createdAt ?? DateTime.now(), 'HH:mm - dd/MM/yyyy')),
         CustomHeaderInfo(
-          title: 'Status',
+          title: 'Trạng thái',
           value: upperCaseFirstLetter(state.order.status ?? ''),
           valueFontWeight: FontWeight.w700,
           valueColor: statusColor[statusOrder.indexOf(state.order.status)],
@@ -110,22 +110,22 @@ class _OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text(
-          'Order Information',
+          'Thông tin đơn hàng',
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
         ),
         const SizedBox(height: 12),
         CustomHeaderInfo(
-            title: 'Shipping Address',
+            title: 'Đại chỉ giao hàng',
             value: state.order.address ?? '',
             valueFontWeight: FontWeight.w700),
         SizedBox(height: 8),
         CustomHeaderInfo(
-            title: 'Payment Method',
+            title: 'Phương thức thanh toán',
             value: state.order.paymentMethod ?? '',
             valueFontWeight: FontWeight.w700),
         SizedBox(height: 8),
         const CustomHeaderInfo(
-            title: 'Delivery Method',
+            title: 'Vận chuyển',
             value: 'Giao hàng nhanh',
             valueFontWeight: FontWeight.w700),
         const SizedBox(height: 8),
@@ -135,19 +135,19 @@ class _OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
             valueFontWeight: FontWeight.w700),
         SizedBox(height: 8),
         CustomHeaderInfo(
-            title: 'Total Amount',
+            title: 'Tiền đơn hàng',
             value: formatMoney(
                 state.order.totalAmount ?? 0, ref.watch(currencyProvider)),
             valueFontWeight: FontWeight.w500),
         const SizedBox(height: 8),
         CustomHeaderInfo(
-            title: 'Discount',
+            title: 'Giảm giá',
             value: '-${formatMoney(
                 state.order.discountAmount ?? 0, ref.watch(currencyProvider))}',
             valueFontWeight: FontWeight.w500),
         const SizedBox(height: 8),
         CustomHeaderInfo(
-            title: 'Final amount',
+            title: 'Tổng tiền',
             value: formatMoney(
                 state.order.finalAmount ?? 0, ref.watch(currencyProvider)),
             valueFontWeight: FontWeight.w700, fontSize: 15,),

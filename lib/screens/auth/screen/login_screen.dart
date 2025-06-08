@@ -40,7 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 50),
                 const Center(
                   child: Text(
-                    "Login",
+                    "Đăng nhập",
                     style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -58,10 +58,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         decoration: const InputDecoration(
                             prefixIcon: Icon(Icons.email_outlined),
                             border: OutlineInputBorder(),
-                            hintText: 'Enter email'),
+                            hintText: 'Nhập địa chỉ  email'),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter email';
+                            return 'Vui lòng nhập địa chỉ email';
                           }
                           return null;
                         },
@@ -71,14 +71,14 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       const SizedBox(height: 5),
                       // Password field
-                      const Text('Password',
+                      const Text('Mật khẩu',
                           style: TextStyle(
                               fontSize: 15, fontWeight: FontWeight.w400)),
                       TextFormField(
                         obscureText: !_passwordVisible,
                         decoration: InputDecoration(
                             border: const OutlineInputBorder(),
-                            hintText: 'Enter password',
+                            hintText: 'Nhập mật khẩu',
                             prefixIcon: const Icon(Icons.lock_outline),
                             suffixIcon: IconButton(
                                 onPressed: () {
@@ -91,7 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     : Icons.visibility_off))),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter password: ';
+                            return 'Vui lòng nhập mật khẩu: ';
                           }
                           return null;
                         },
@@ -109,7 +109,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             child: const Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Text("Forgot your password?",
+                                Text("Quên mật khẩu?",
                                     style: TextStyle(color: Colors.black87)),
                                 // Icon(Icons.arrow_right_alt, color: Colors.red),
                               ],
@@ -122,7 +122,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             child: const Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Text("Sign up?",
+                                Text("Đăng ký tài khoản?",
                                     style: TextStyle(color: Colors.black87)),
                                 Icon(Icons.arrow_right_alt, color: Colors.red),
                               ],
@@ -143,7 +143,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             padding: const EdgeInsets.symmetric(vertical: 16),
                           ),
-                          child: const Text("LOGIN",
+                          child: const Text("ĐĂNG NHẬP",
                               style:
                                   TextStyle(color: Colors.white, fontSize: 18)),
                         ),
@@ -153,7 +153,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 const SizedBox(height: 30),
                 // Or login with
-                const Center(child: Text("Or auth with social account")),
+                const Center(child: Text("Hoặc đăng nhập bằng tài khoản")),
                 const SizedBox(height: 16),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -179,7 +179,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final user = await authProvider.login(_email, _password);
     if (mounted && user != null) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("Login success"),
+        content: Text("Đăng nhập thành công"),
         backgroundColor: Colors.green,
       ));
       reloadApiUrl();
@@ -190,7 +190,7 @@ class _LoginScreenState extends State<LoginScreen> {
     } else {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("Login failed"),
+        content: Text("Đăng nhập thất bại"),
         backgroundColor: Colors.red,
       ));
     }

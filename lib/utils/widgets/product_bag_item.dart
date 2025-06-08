@@ -72,13 +72,13 @@ class _ProductBagItemState extends ConsumerState<ProductBagItem> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: const Text("Confirm"),
+              title: const Text("Xác thực"),
               content: const Text(
-                  "Are you sure you want to remove this item from cart?"),
+                  "Bạn có chắc chắn bỏ sản phẩm này khỏi giỏ hàng không?"),
               actions: [
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(false),
-                  child: const Text("Cancel"),
+                  child: const Text("Hủy"),
                 ),
                 TextButton(
                   onPressed: () async {
@@ -90,12 +90,12 @@ class _ProductBagItemState extends ConsumerState<ProductBagItem> {
                     if (mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                            content: Text('${widget.name} removed from cart')),
+                            content: Text('${widget.name} đã bị xóa khỏi giỏ hàng')),
                       );
                     }
                     Navigator.of(context).pop(true);
                   },
-                  child: const Text("Delete"),
+                  child: const Text("Xóa"),
                 ),
               ],
             );
@@ -104,7 +104,7 @@ class _ProductBagItemState extends ConsumerState<ProductBagItem> {
       },
       onDismissed: (direction) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('${widget.name} removed from cart')),
+          SnackBar(content: Text('${widget.name} đã bị xóa khỏi giỏ hàng')),
         );
       },
       child: Container(

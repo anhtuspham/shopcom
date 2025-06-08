@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shop_com/data/config/app_config.dart';
+import 'package:shop_com/providers/coupon_provider.dart';
 import 'package:shop_com/providers/user_provider.dart';
 import 'package:shop_com/utils/widgets/appbar_widget.dart';
 
@@ -29,7 +30,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
   final List<Map<String, String>> paymentMethod = [
     {'label': 'Thanh toán khi nhận hàng', 'value': 'COD'},
     {'label': 'Thanh toán thẻ VISA', 'value': 'VISA'},
-    {'label': 'Thanh toán qua Momo', 'value': 'MOMO'},
+    // {'label': 'Thanh toán qua Momo', 'value': 'MOMO'},
   ];
 
   final List<Map<String, String>> deliveryMethod = [
@@ -37,13 +38,24 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if(widget.couponCode.isNotEmpty){
+        ref.read(couponProvider.notifier).getCoupon(couponCode: widget.couponCode);
+      }
+    },);
+  }
+
+  @override
   Widget build(BuildContext context) {
     final userAsync = ref.watch(userProvider);
     final currency = ref.watch(currencyProvider);
+    final coupon = ref.watch(couponProvider);
     final cart = ref.watch(cartProvider);
 
     return Scaffold(
-      appBar: const AppBarWidget(title: 'Check out'),
+      appBar: const AppBarWidget(title: 'Thanh toán'),
       body: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
           return SingleChildScrollView(
@@ -64,15 +76,16 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                       ),
                       _buildDeliveryMethodSection(),
                       const SizedBox(height: 20),
-                      _buildCheckoutInfo(),
+                      _buildCheckoutInfo(cart, coupon),
+                      const SizedBox(height: 20),
                       const Spacer(),
                       SizedBox(
                           width: double.infinity,
                           child: CommonButtonWidget(
                             callBack: _isProcessingOrder ? null : _handleSubmitOrder,
                             label: _isProcessingOrder
-                                ? 'PROCESSING...'
-                                : 'SUBMIT ORDER',
+                                ? 'Đang xử lý...'
+                                : 'Đặt hàng',
                             style: const TextStyle(color: Colors.white),
                             buttonStyle: ButtonStyle(
                                 backgroundColor: WidgetStatePropertyAll(
@@ -194,29 +207,52 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
     );
   }
 
-  Widget _buildCheckoutInfo() {
+  Widget _buildCheckoutInfo(CartState cart, CouponState coupon) {
+    final originalPrice = cart.cart.totalPrice;
+
+    double discount = 0;
+    if (coupon.couponDetail != null) {
+      final current = coupon.couponDetail!;
+      if (current.discountType == 'percentage') {
+        discount = ((originalPrice ?? 0) * (current.discountValue as num)/ 100).toDouble();
+        if (current.maxDiscountAmount != null && discount > current.maxDiscountAmount!) {
+          discount = current.maxDiscountAmount!.toDouble();
+        }
+      } else if (current.discountType == 'fixed') {
+        discount = current.discountValue?.toDouble() ?? 0;
+      }
+
+      if (current.minOrderValue != null && originalPrice! < current.minOrderValue!) {
+        discount = 0;
+      }
+    }
+
+    final finalPrice = (originalPrice ?? 0) - discount;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Thông tin đơn hàng',
+        const Text('Thông tin đơn hàng',
             style: TextStyle(
                 fontWeight: FontWeight.bold,
                 letterSpacing: 1.25,
                 fontSize: 19)),
-        SizedBox(height: 12),
+        const SizedBox(height: 12),
         CustomHeaderInfo(
             title: 'Tổng tiền hàng',
-            value: formatMoney(10, ref.watch(currencyProvider)),
+            value: formatMoney(cart.cart.totalPrice ?? 0, ref.watch(currencyProvider)),
             valueFontWeight: FontWeight.w700),
-        SizedBox(height: 8),
-        CustomHeaderInfo(
+        const SizedBox(height: 8),
+        CustomHeaderInfo(title: 'Giảm giá', value: formatMoney(discount, ref.watch(currencyProvider)), valueFontWeight: FontWeight.w700,),
+        const SizedBox(height: 8),
+        const CustomHeaderInfo(
             title: 'Phí vận chuyển',
-            value: formatMoney(1, ref.watch(currencyProvider)),
+            // value: formatMoney(1, ref.watch(currencyProvider)),
+            value: 'Miễn phí',
             valueFontWeight: FontWeight.w700),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         CustomHeaderInfo(
             title: 'Thành tiền',
-            value: formatMoney(12, ref.watch(currencyProvider)),
+            value: formatMoney(finalPrice, ref.watch(currencyProvider)),
             valueFontWeight: FontWeight.w700),
       ],
     );
@@ -229,6 +265,14 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
     });
 
     try {
+      if (ref.read(userProvider).user.address == null || ref.read(userProvider).user.address!.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Vui lòng cập nhật địa chỉ giao hàng')),
+        );
+        setState(() => _isProcessingOrder = false);
+        return;
+      }
+
       if (_selectedPaymentMethod == 'VISA') {
         await _makePayment(context);
       } else {
@@ -259,12 +303,17 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
 
   Future<void> _makePayment(BuildContext context) async {
     final cart = ref.watch(cartProvider);
+    final coupon = ref.watch(couponProvider);
     try {
       // Use the total amount from checkout info (in cents)
-      double totalAmount = (cart.cart.totalPrice ?? 0);
+      double finalAmount = _calculateFinalPrice(cart, coupon);
+      print('finalAmount $finalAmount');
+
+      // double totalAmount = (cart.cart.totalPrice ?? 0);
       final currency = ref.watch(currencyProvider).name ?? 'usd';
-      if(currency == 'vnd') totalAmount = ((cart.cart.totalPrice ?? 0) * 25980).roundToDouble();
-      final paymentIntentData = await api.createPaymentIntent(totalAmount, currency);
+      if(currency == 'vnd') finalAmount = (finalAmount * 25980).roundToDouble();
+      if(currency == 'usd') finalAmount = (finalAmount * 100).roundToDouble();
+      final paymentIntentData = await api.createPaymentIntent(finalAmount, currency);
 
       if (kDebugMode) {
         print('PaymentIntent response: $paymentIntentData');
@@ -323,4 +372,26 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
       );
     }
   }
+  double _calculateFinalPrice(CartState cart, CouponState coupon) {
+    final originalPrice = cart.cart.totalPrice ?? 0;
+    double discount = 0;
+
+    if (coupon.couponDetail != null) {
+      final current = coupon.couponDetail!;
+      if (current.minOrderValue != null && originalPrice < current.minOrderValue!) {
+        return originalPrice;
+      }
+      if (current.discountType == 'percentage') {
+        discount = (originalPrice * current.discountValue! / 100);
+        if (current.maxDiscountAmount != null && discount > current.maxDiscountAmount!) {
+          discount = current.maxDiscountAmount!.toDouble();
+        }
+      } else if (current.discountType == 'fixed') {
+        discount = current.discountValue?.toDouble() ?? 0;
+      }
+    }
+
+    return originalPrice - discount;
+  }
+
 }

@@ -51,7 +51,7 @@ class DashboardPageScreen extends StatelessWidget {
               // New Section
               _buildSection(
                 title: 'New',
-                subtitle: 'You’ve never seen it before!',
+                subtitle: 'Các sản phẩm mới nhất của chúng tôi!',
                 tags: ['NEW', 'NEW'],
                 products: [],
               ),

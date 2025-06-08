@@ -31,7 +31,7 @@ class _OrderScreenState extends ConsumerState<OrderScreen> {
     return DefaultTabController(
       length: 4,
       child: Scaffold(
-        appBar: const AppBarWidget(title: 'My Orders'),
+        appBar: const AppBarWidget(title: 'Đơn hàng của tôi'),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -60,25 +60,25 @@ class _OrderScreenState extends ConsumerState<OrderScreen> {
                             child: Padding(
                           padding: EdgeInsets.symmetric(
                               horizontal: 12, vertical: 4),
-                          child: Text('Pending'),
+                          child: Text('Đang chờ'),
                         )),
                         Tab(
                             child: Padding(
                           padding: EdgeInsets.symmetric(
                               horizontal: 12, vertical: 4),
-                          child: Text('Processing'),
+                          child: Text('Đang xử lý'),
                         )),
                         Tab(
                             child: Padding(
                           padding: EdgeInsets.symmetric(
                               horizontal: 12, vertical: 4),
-                          child: Text('Delivered'),
+                          child: Text('Đã giao'),
                         )),
                         Tab(
                             child: Padding(
                           padding: EdgeInsets.symmetric(
                               horizontal: 12, vertical: 4),
-                          child: Text('Canceled'),
+                          child: Text('Hủy'),
                         )),
                       ],
                     ),

@@ -81,7 +81,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Cart',
+          'Giỏ hàng',
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
@@ -139,7 +139,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                   return TextField(
                     onChanged: (val) => _couponCode.value = val.trim(),
                     decoration: const InputDecoration(
-                      hintText: 'Enter your promo code',
+                      hintText: 'Nhập mã giảm giá ở đây',
                       border: UnderlineInputBorder(),
                       contentPadding:
                           EdgeInsets.symmetric(horizontal: 12, vertical: 12),
@@ -155,7 +155,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text(
-                    'Total amount:',
+                    'Tổng tiền:',
                     style: TextStyle(
                       fontSize: 16,
                       color: Colors.grey,
@@ -176,7 +176,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                   width: double.infinity,
                   child: CommonButtonWidget(
                     callBack: state.cart.products!.isEmpty ? null : _handleCheckout,
-                    label: _isProcessingOrder ? 'PROCESSING...' : 'CHECK OUT',
+                    label: _isProcessingOrder ? 'Đang xử lý...' : 'Đặt hàng',
                     style: const TextStyle(color: Colors.white),
                     buttonStyle: ButtonStyle(
                         backgroundColor: WidgetStatePropertyAll(
@@ -201,7 +201,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
           const SizedBox(height: 16),
           ElevatedButton(
             onPressed: _refreshCart,
-            child: const Text('Refresh'),
+            child: const Text('Tải lại'),
           ),
         ],
       ),

@@ -36,7 +36,7 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
                   callBack: () {
                     app_config.clearUser();
                     context.go('/login');
-                  }, label: 'Log out')
+                  }, label: 'Đăng xuất')
             ],
           ),
         ),
@@ -79,13 +79,13 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
 
   Widget _buildOrderSection(WidgetRef ref) {
     final menuItems = [
-      {'title': 'My orders', 'trailing': ''},
-      {'title': 'Shipping addresses', 'trailing': ''},
-      {'title': 'Payment methods', 'trailing': 'Momo 0395****38'},
-      {'title': 'Promocodes', 'trailing': 'You have special promocodes'},
-      {'title': 'My reviews', 'trailing': 'Reviews for 4 items'},
-      {'title': 'Currency', 'trailing': 'USD'},
-      {'title': 'Settings', 'trailing': 'Notifications, password'},
+      {'title': 'Đơn hàng của tôi', 'trailing': ''},
+      {'title': 'Địa chỉ giao hàng', 'trailing': ''},
+      // {'title': 'Payment methods', 'trailing': 'Momo 0395****38'},
+      // {'title': 'Promocodes', 'trailing': 'You have special promocodes'},
+      // {'title': 'My reviews', 'trailing': 'Reviews for 4 items'},
+      {'title': 'Đơn vị tiền tệ', 'trailing': 'USD'},
+      // {'title': 'Settings', 'trailing': 'Notifications, password'},
     ];
 
     return ListView.separated(
@@ -109,7 +109,7 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
         //     fontSize: 12,
         //   ),
         // ),
-        trailing: menuItems[index]['title'] == 'Currency'
+        trailing: menuItems[index]['title'] == 'Đơn vị tiền tệ'
             ? DropdownButton<Currency>(
                 value: ref.watch(currencyProvider),
                 onChanged: (value) {
@@ -145,7 +145,7 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
               context.push('/shippingAddress');
               break;
             case 2:
-              context.push('/setting');
+              // context.push('/setting');
               break;
           }
         },

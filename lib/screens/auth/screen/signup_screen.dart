@@ -40,7 +40,7 @@ class _SignupScreen extends State<SignupScreen> {
                 const SizedBox(height: 50),
                 const Center(
                   child: Text(
-                    "Sign up",
+                    "Đăng ký tài khoản",
                     style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -50,17 +50,17 @@ class _SignupScreen extends State<SignupScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('Name',
+                      const Text('Tên',
                           style: TextStyle(
                               fontSize: 15, fontWeight: FontWeight.w400)),
                       TextFormField(
                         decoration: const InputDecoration(
                             prefixIcon: Icon(Icons.account_circle_outlined),
                             border: OutlineInputBorder(),
-                            hintText: 'Enter name'),
+                            hintText: 'Nhập tên'),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter name';
+                            return 'Vui lòng nhập tên';
                           }
                           return null;
                         },
@@ -76,10 +76,10 @@ class _SignupScreen extends State<SignupScreen> {
                         decoration: const InputDecoration(
                             prefixIcon: Icon(Icons.email_outlined),
                             border: OutlineInputBorder(),
-                            hintText: 'Enter email'),
+                            hintText: 'Nhập email'),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter email';
+                            return 'Vui lòng nhập email';
                           }
                           return null;
                         },
@@ -89,14 +89,14 @@ class _SignupScreen extends State<SignupScreen> {
                       ),
                       const SizedBox(height: 5),
                       // Password field
-                      const Text('Password',
+                      const Text('Mật khẩu',
                           style: TextStyle(
                               fontSize: 15, fontWeight: FontWeight.w400)),
                       TextFormField(
                         obscureText: !_passwordVisible,
                         decoration: InputDecoration(
                             border: const OutlineInputBorder(),
-                            hintText: 'Enter password',
+                            hintText: 'Nhập mật khẩu',
                             prefixIcon: const Icon(Icons.lock_outline),
                             suffixIcon: IconButton(
                                 onPressed: () {
@@ -109,7 +109,7 @@ class _SignupScreen extends State<SignupScreen> {
                                     : Icons.visibility_off))),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter password: ';
+                            return 'Vui lòng nhập mật khẩu: ';
                           }
                           return null;
                         },
@@ -129,7 +129,7 @@ class _SignupScreen extends State<SignupScreen> {
                     child: const Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text("Already have an account?",
+                        Text("Bạn đã có tài khoản?",
                             style: TextStyle(color: Colors.black87)),
                         Icon(Icons.arrow_right_alt, color: Colors.red),
                       ],
@@ -149,13 +149,13 @@ class _SignupScreen extends State<SignupScreen> {
                       ),
                       padding: const EdgeInsets.symmetric(vertical: 16),
                     ),
-                    child: const Text("SIGNUP",
+                    child: const Text("ĐĂNG KÝ",
                         style: TextStyle(color: Colors.white, fontSize: 18)),
                   ),
                 ),
                 const SizedBox(height: 30),
                 // Or login with
-                const Center(child: Text("Or sign up with social account")),
+                const Center(child: Text("Hoặc đăng nhập bằng tài khoản")),
                 const SizedBox(height: 16),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
