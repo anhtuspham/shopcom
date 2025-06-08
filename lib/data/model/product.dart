@@ -15,6 +15,7 @@ class Product {
   Ratings? ratings;
   bool? isActive;
   DateTime? createdAt;
+  double? score;
 
   Product({
     this.id,
@@ -27,6 +28,7 @@ class Product {
     this.ratings,
     this.isActive,
     this.createdAt,
+    this.score
   });
 
   factory Product.fromRawJson(String str) => Product.fromJson(json.decode(str));
@@ -59,6 +61,7 @@ class Product {
       createdAt: json["createdAt"] != null
           ? DateTime.tryParse(json["createdAt"])
           : null,
+      score: json["score"]?.toDouble(),
     );
   }
 
