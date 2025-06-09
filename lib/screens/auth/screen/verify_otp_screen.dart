@@ -4,15 +4,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shop_com/data/model/verify.dart';
 
 import '../../../data/config/app_config.dart';
 
 int timeExpireOTP = 300;
 
 class VerifyOtpScreen extends StatefulWidget {
-  final String email;
+  final Verify verify;
 
-  const VerifyOtpScreen({super.key, required this.email});
+  const VerifyOtpScreen({super.key, required this.verify});
 
   @override
   State<VerifyOtpScreen> createState() => _VerifyOtpScreenState();
@@ -150,28 +151,59 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                           final otp = _controllers
                               .map((controller) => controller.text)
                               .join();
-                          final result = await api.verifyOtpEmail(
-                              email: widget.email, otp: otp);
-                          if(!context.mounted) return;
-                          if (mounted && result.isValue == true) {
-                            if(!context.mounted) return;
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(const SnackBar(
-                              content: Text("Xác thực thành công, vui lòng đăng nhập"),
-                              backgroundColor: Colors.green,
-                            ));
-                            reloadApiUrl();
-                            if (mounted) {
-                              context.goNamed("login");
+                          if (widget.verify.isVerifyEmail == true) {
+                            final result = await api.verifyOtpEmail(
+                                email: widget.verify.email, otp: otp);
+
+                            if (!context.mounted) return;
+                            if (mounted && result.isValue == true) {
+                              if (!context.mounted) return;
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(const SnackBar(
+                                content: Text(
+                                    "Xác thực thành công, vui lòng đăng nhập"),
+                                backgroundColor: Colors.green,
+                              ));
+                              reloadApiUrl();
+                              if (mounted) {
+                                context.goNamed("login");
+                              }
+                              // Future.microtask(() => context.go("/tab1"));
+                            } else {
+                              if (!mounted) return;
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(const SnackBar(
+                                content: Text("Xác thực OTP thất bại"),
+                                backgroundColor: Colors.red,
+                              ));
                             }
-                            // Future.microtask(() => context.go("/tab1"));
                           } else {
-                            if (!mounted) return;
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(const SnackBar(
-                              content: Text("Xác thực OTP thất bại"),
-                              backgroundColor: Colors.red,
-                            ));
+                            final result = await api.verifyOtpPassword(
+                                email: widget.verify.email, otp: otp);
+
+                            if (!context.mounted) return;
+                            if (mounted && result != null) {
+                              if (!context.mounted) return;
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(const SnackBar(
+                                content: Text(
+                                    "Xác thực thành công, vui lòng cập nhât mật khẩu"),
+                                backgroundColor: Colors.green,
+                              ));
+                              print("result ${result}");
+                              reloadApiUrl();
+                              if (mounted) {
+                                context.goNamed("renew", extra: result);
+                              }
+                              // Future.microtask(() => context.go("/tab1"));
+                            } else {
+                              if (!mounted) return;
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(const SnackBar(
+                                content: Text("Xác thực OTP thất bại"),
+                                backgroundColor: Colors.red,
+                              ));
+                            }
                           }
                         }
                       : null,

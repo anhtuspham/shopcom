@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../data/config/app_config.dart';
+import '../../../data/model/verify.dart';
 import '../../../utils/widgets/input_form_widget.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -186,7 +187,7 @@ class _SignupScreen extends State<SignupScreen> {
       ));
       reloadApiUrl();
       if (mounted) {
-        context.goNamed("verifyOtp", extra: _email);
+        context.goNamed("verifyOtp", extra: Verify(email: _email, isVerifyEmail: true));
       }
     } else {
       if (!mounted) return;
@@ -203,7 +204,7 @@ class _SignupScreen extends State<SignupScreen> {
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: color,
-        boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 5)],
+        boxShadow: const [BoxShadow(color: Colors.black26, blurRadius: 5)],
       ),
       child: FaIcon(icon, size: 28, color: Colors.black87),
     );

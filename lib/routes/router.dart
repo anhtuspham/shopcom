@@ -4,10 +4,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shop_com/data/model/verify.dart';
 import 'package:shop_com/providers/order_detail_provider.dart';
 import 'package:shop_com/providers/product_detail_provider.dart';
 import 'package:shop_com/screens/account/screen/account_screen.dart';
 import 'package:shop_com/screens/account/sub-screen/checkout_screen.dart';
+import 'package:shop_com/screens/auth/screen/forgot_password_screen.dart';
+import 'package:shop_com/screens/auth/screen/renew_password_screen.dart';
 import 'package:shop_com/screens/auth/screen/verify_otp_screen.dart';
 import 'package:shop_com/screens/auth/screen/signup_screen.dart';
 import 'package:shop_com/screens/cart/screen/cart_screen.dart';
@@ -35,7 +38,7 @@ final GlobalKey<NavigatorState> _shellNavigatorKey =
 FutureOr<String?> systemRedirect(BuildContext context, GoRouterState state) {
   AuthUser? user = app_config.user;
   if (user == null) {
-    if (state.fullPath!.compareTo("/login") != 0 && state.fullPath != '/signup' && state.fullPath != '/verifyOtp') {
+    if (state.fullPath!.compareTo("/login") != 0 && state.fullPath != '/signup' && state.fullPath != '/verifyOtp' && state.fullPath != '/forgotPassword' && state.fullPath != '/renew') {
       return '/login';
     }
   }
@@ -59,13 +62,30 @@ GoRouter genRoute() {
         return const SignupScreen();
       });
 
+  GoRoute screenForgotPassword = GoRoute(
+      path: '/forgotPassword',
+      name: 'forgotPassword',
+      builder: (BuildContext context, GoRouterState state){
+        return const ForgotScreen();
+      }
+  );
+
   GoRoute screenVerifyOtp = GoRoute(
     path: '/verifyOtp',
     name: 'verifyOtp',
     builder: (BuildContext context, GoRouterState state){
-      final email = state.extra as String;
-      return VerifyOtpScreen(email: email);
+      final verifyObject = state.extra as Verify;
+      return VerifyOtpScreen(verify: verifyObject);
     }
+  );
+
+  GoRoute screenRenewPassword = GoRoute(
+      path: '/renew',
+      name: 'renew',
+      builder: (BuildContext context, GoRouterState state){
+        final token = state.extra as String;
+        return RenewScreen(token: token);
+      }
   );
 
   List<GoRoute> groupHome = [];
@@ -77,6 +97,8 @@ GoRouter genRoute() {
         screenLogin,
         screenSignup,
         screenVerifyOtp,
+        screenForgotPassword,
+        screenRenewPassword,
         ShellRoute(
           navigatorKey: _shellNavigatorKey,
           builder: (context, state, child) => HomeScreen(child: child),

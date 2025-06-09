@@ -66,6 +66,12 @@ mixin UserApi on BaseApi {
             data: {'name': name, 'email': email, 'password': password}));
   }
 
+  Future<Result> forgotPassword({required String email}) async {
+    return handleRequest(
+      request: () => post('/api/users/forgot-password', data: {'email': email}),
+    );
+  }
+
   Future<Result> verifyOtpEmail({
     String? email,
     String? otp,
@@ -80,6 +86,33 @@ mixin UserApi on BaseApi {
       ),
     );
   }
+
+  Future<String?> verifyOtpPassword({
+    String? email,
+    String? otp,
+  }) async {
+    Result result = await handleRequest(
+      request: () => post(
+        '/api/users/verify-otp-password',
+        data: {
+          'email': email,
+          'otp': otp,
+        },
+      ),
+    );
+
+    final data = result.asValue?.value as Map<String, dynamic>;
+    return data['token'] as String?;
+  }
+  Future<Result> resetPassword(
+      {required String token,
+        required String password,
+        required String confirmNewPassword}) async {
+    return handleRequest(
+        request: () => post('/api/users/reset-password',
+            data: {'token': token, 'newPassword': password, 'confirmNewPassword': confirmNewPassword}));
+  }
+
 
   Future<Result> editUser({
     String? email,
