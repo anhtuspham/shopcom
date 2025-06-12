@@ -39,8 +39,15 @@ mixin OrderApi on BaseApi {
   Future<Result> createOrder(
       {String? paymentMethod, String? couponCode, bool? isPaid}) async {
     return handleRequest(
-        request: () => post('/api/order',
-            data: {"paymentMethod": paymentMethod, "couponCode": couponCode, "isPaid": isPaid}));
+        request: () => post('/api/order', data: {
+              "paymentMethod": paymentMethod,
+              "couponCode": couponCode,
+              "isPaid": isPaid
+            }));
+  }
+
+  Future<Result> cancelOrder({required String orderId}) async {
+    return handleRequest(request: () => delete('/api/order/$orderId/cancel'));
   }
 
   Future<Order> fetchOrderDetail({required String orderId}) async {
@@ -64,10 +71,11 @@ mixin OrderApi on BaseApi {
       if (result.isValue) {
         return result.asValue!.value;
       } else {
-        throw Exception('Failed to create PaymentIntent: ${result.asError!.error}');
+        throw Exception(
+            'Failed to create PaymentIntent: ${result.asError!.error}');
       }
     } catch (error) {
-      if(kDebugMode){
+      if (kDebugMode) {
         print(error);
       }
     }

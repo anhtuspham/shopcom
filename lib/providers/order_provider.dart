@@ -74,11 +74,35 @@ class OrderNotifier extends StateNotifier<OrderState> {
         isError: true,
         errorMessage: e.toString(),
       );
-      throw e;
+      rethrow;
     } finally {
       state = state.copyWith(isLoading: false);
     }
   }
+
+  Future<void> cancelOrder({required String orderId}) async {
+    state = state.copyWith(isLoading: true, isError: false);
+    try {
+      final result = await api.cancelOrder(orderId: orderId);
+      if (result.isValue) {
+        await api.fetchCart();
+        await _updateOrderState();
+      } else {
+        app_config.printLog("e", " API_CANCEL_ORDER : ${result.asError?.error} ");
+        throw Exception("Failed to cancel order: ${result.asError?.error}");
+      }
+    } catch (e) {
+      state = state.copyWith(
+        isLoading: false,
+        isError: true,
+        errorMessage: e.toString(),
+      );
+      rethrow;
+    } finally {
+      state = state.copyWith(isLoading: false);
+    }
+  }
+
   Future<void> _updateOrderState() async{
     try{
       final order = await api.fetchOrder();

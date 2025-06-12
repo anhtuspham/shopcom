@@ -187,7 +187,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
           ),
           SizedBox(height: 8),
           Text(
-            'You\'ve never seen it before!',
+            'Sản phẩm mới nhất của cửa hàng chúng tôi',
             style: TextStyle(
               fontSize: 16,
               color: Colors.grey,

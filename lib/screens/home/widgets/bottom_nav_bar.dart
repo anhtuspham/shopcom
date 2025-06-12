@@ -31,11 +31,11 @@ class BottomNavBar extends StatelessWidget {
         }
       },
       items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-        BottomNavigationBarItem(icon: Icon(Icons.shopping_cart), label: "Shop"),
-        BottomNavigationBarItem(icon: Icon(Icons.shopping_bag), label: "Cart"),
-        BottomNavigationBarItem(icon: Icon(Icons.favorite), label: "Favorite"),
-        BottomNavigationBarItem(icon: Icon(Icons.person), label: "Account"),
+        BottomNavigationBarItem(icon: Icon(Icons.home), label: "Trang chủ"),
+        BottomNavigationBarItem(icon: Icon(Icons.shopping_cart), label: "Cửa hàng"),
+        BottomNavigationBarItem(icon: Icon(Icons.shopping_bag), label: "Giỏ hàng"),
+        BottomNavigationBarItem(icon: Icon(Icons.favorite), label: "Yêu thích"),
+        BottomNavigationBarItem(icon: Icon(Icons.person), label: "Tài khoản"),
       ],
     );
   }
