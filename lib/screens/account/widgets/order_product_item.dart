@@ -13,6 +13,7 @@ class OrderProductItem extends ConsumerStatefulWidget {
   final String? color;
   final String? unit;
   final String? ram;
+  final String? rom;
   final double? price;
   final bool? isFavorite;
   final int index;
@@ -26,6 +27,7 @@ class OrderProductItem extends ConsumerStatefulWidget {
       this.price,
       this.unit,
       this.ram,
+      this.rom,
       required this.index,
       this.isFavorite = false});
 
@@ -86,15 +88,26 @@ class _OrderProductItemState extends ConsumerState<OrderProductItem> {
                       overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: 8),
-                    Text(
-                      'Color: ${widget.color}',
-                      style: TextStyle(color: Colors.grey[600]),
-                    ),
+                    widget.color != null
+                        ? Text(
+                            'Màu: ${widget.color}',
+                            style: TextStyle(color: Colors.grey[600]),
+                          )
+                        : const SizedBox(),
                     const SizedBox(height: 4),
-                    Text(
-                      'Ram: ${widget.ram}',
-                      style: TextStyle(color: Colors.grey[600]),
-                    ),
+                    widget.ram != null
+                        ? Text(
+                            'Ram: ${widget.ram}',
+                            style: TextStyle(color: Colors.grey[600]),
+                          )
+                        : const SizedBox(),
+                    const SizedBox(height: 4),
+                    widget.rom != null
+                        ? Text(
+                            'Rom: ${widget.rom}',
+                            style: TextStyle(color: Colors.grey[600]),
+                          )
+                        : const SizedBox(),
                   ],
                 ),
                 const SizedBox(

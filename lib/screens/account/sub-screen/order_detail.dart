@@ -53,7 +53,7 @@ class _OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
                     const SizedBox(height: 20),
                     _buildOrderInformation(state),
                     const SizedBox(height: 20),
-                    // _buildButtonSection()
+                    state.order.status == 'pending' ? _buildButtonSection() : const SizedBox()
                   ],
                 ),
               ),
@@ -91,6 +91,7 @@ class _OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
           name: state.order.products?[index].productName,
           color: state.order.products?[index].variantProduct?[0].color,
           ram: state.order.products?[index].variantProduct?[0].ram,
+          rom: state.order.products?[index].variantProduct?[0].rom,
           price: state.order.products?[index].price);
     });
 
@@ -131,7 +132,9 @@ class _OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
         const SizedBox(height: 8),
         CustomHeaderInfo(
             title: 'Tình trạng',
-            value: state.order.isPaid == true ? 'Đã thanh toán' : 'Chưa thanh toán',
+            value: state.order.isPaid == true
+                ? 'Đã thanh toán'
+                : 'Chưa thanh toán',
             valueFontWeight: FontWeight.w700),
         SizedBox(height: 8),
         CustomHeaderInfo(
@@ -142,15 +145,17 @@ class _OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
         const SizedBox(height: 8),
         CustomHeaderInfo(
             title: 'Giảm giá',
-            value: '-${formatMoney(
-                state.order.discountAmount ?? 0, ref.watch(currencyProvider))}',
+            value:
+                '-${formatMoney(state.order.discountAmount ?? 0, ref.watch(currencyProvider))}',
             valueFontWeight: FontWeight.w500),
         const SizedBox(height: 8),
         CustomHeaderInfo(
-            title: 'Tổng tiền',
-            value: formatMoney(
-                state.order.finalAmount ?? 0, ref.watch(currencyProvider)),
-            valueFontWeight: FontWeight.w700, fontSize: 15,),
+          title: 'Tổng tiền',
+          value: formatMoney(
+              state.order.finalAmount ?? 0, ref.watch(currencyProvider)),
+          valueFontWeight: FontWeight.w700,
+          fontSize: 15,
+        ),
       ],
     );
   }
@@ -162,18 +167,52 @@ class _OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
         children: [
           Expanded(
             child: CommonButtonWidget(
-              callBack: () {},
-              label: 'Reorder',
-            ),
-          ),
-          Expanded(
-            child: CommonButtonWidget(
-                callBack: () {},
-                label: 'Leave feedback',
+                callBack: () async {
+                  try {
+                    await ref
+                        .read(orderProvider.notifier)
+                        .cancelOrder(orderId: widget.id);
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      content: Text('Đơn hàng đã bị hủy'),
+                      backgroundColor: Colors.green,
+                    ));
+                    if (!mounted) return;
+                    Navigator.pop(context);
+                  } catch (e) {
+                    print(e);
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      content: Text('Có lỗi khi hủy đơn hàng}'),
+                      backgroundColor: Colors.red,
+                    ));
+                  }
+                },
+                label: 'Hủy đơn hàng',
                 style: const TextStyle(color: Colors.white),
                 buttonStyle: const ButtonStyle(
-                    backgroundColor: WidgetStatePropertyAll(Colors.green))),
+                    backgroundColor: WidgetStatePropertyAll(Colors.red))),
           )
         ]);
   }
+
+// Widget _buildButtonSection() {
+//   return Row(
+//       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//       spacing: 35,
+//       children: [
+//         Expanded(
+//           child: CommonButtonWidget(
+//             callBack: () {},
+//             label: 'Reorder',
+//           ),
+//         ),
+//         Expanded(
+//           child: CommonButtonWidget(
+//               callBack: () {},
+//               label: 'Leave feedback',
+//               style: const TextStyle(color: Colors.white),
+//               buttonStyle: const ButtonStyle(
+//                   backgroundColor: WidgetStatePropertyAll(Colors.green))),
+//         )
+//       ]);
+// }
 }
