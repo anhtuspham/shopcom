@@ -15,7 +15,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   double posX = 20;
-  double posY = 500;
+  double posY = 900;
 
   @override
   Widget build(BuildContext context) {

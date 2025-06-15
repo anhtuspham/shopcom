@@ -48,7 +48,7 @@ class _ProductCardState extends ConsumerState<ProductCard> {
     return InkWell(
       onTap: () => context.push('/productDetail', extra: widget.id),
       child: Container(
-        width: width * 0.45,
+        width: width * 0.35,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(8),
@@ -66,24 +66,26 @@ class _ProductCardState extends ConsumerState<ProductCard> {
                     topRight: Radius.circular(8),
                   ),
                   child: SizedBox(
-                    height: height * 0.2,
-                    child: Image.network(
-                      widget.imageUrl,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) {
-                        return Container(
-                          color: Colors.grey[300],
-                          child: const Center(
-                            child: Icon(Icons.image_not_supported, size: 40),
-                          ),
-                        );
-                      },
-                      loadingBuilder: (context, child, loadingProgress) {
-                        if (loadingProgress == null) {
-                          return child;
-                        }
-                        return const Center(child: CircularProgressIndicator());
-                      },
+                    height: height * 0.13,
+                    child: Center(
+                      child: Image.network(
+                        widget.imageUrl,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Container(
+                            color: Colors.grey[300],
+                            child: const Center(
+                              child: Icon(Icons.image_not_supported, size: 40),
+                            ),
+                          );
+                        },
+                        loadingBuilder: (context, child, loadingProgress) {
+                          if (loadingProgress == null) {
+                            return child;
+                          }
+                          return const Center(child: CircularProgressIndicator());
+                        },
+                      ),
                     ),
                   ),
                 ),
@@ -102,7 +104,7 @@ class _ProductCardState extends ConsumerState<ProductCard> {
                         widget.discount ?? '',
                         style: const TextStyle(
                           color: Colors.white,
-                          fontSize: 12,
+                          fontSize: 14,
                         ),
                       ),
                     ),
@@ -163,10 +165,10 @@ class _ProductCardState extends ConsumerState<ProductCard> {
               child: Text(
                 widget.brand,
                 style: const TextStyle(
-                  fontSize: 11,
+                  fontSize: 13,
                   color: Colors.grey,
                 ),
-                maxLines: 1,
+                maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
             ),
@@ -177,10 +179,10 @@ class _ProductCardState extends ConsumerState<ProductCard> {
               child: Text(
                 widget.title,
                 style: const TextStyle(
-                  fontSize: 14,
+                  fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
-                maxLines: 1,
+                maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
             ),
@@ -194,7 +196,7 @@ class _ProductCardState extends ConsumerState<ProductCard> {
                     formatMoney(
                         widget.originalPrice, ref.watch(currencyProvider)),
                     style: TextStyle(
-                      fontSize: 12,
+                      fontSize: 14,
                       color: widget.discountedPrice != null
                           ? Colors.grey
                           : Colors.red[400],

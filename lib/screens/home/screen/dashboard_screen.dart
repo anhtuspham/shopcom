@@ -200,17 +200,18 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   }
 
   Widget _productsGrid(ProductState state) {
-    final newestProduct = state.products.take(4).toList();
+    // final newestProduct = state.products.take(4).toList();
+    final newestProduct = state.products;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: GridView.builder(
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 0.6,
+          crossAxisCount: 3,
+          childAspectRatio: 0.7,
           mainAxisSpacing: 12,
           crossAxisSpacing: 6,
         ),
-        itemCount: newestProduct.length,
+        itemCount: state.products.length,
         itemBuilder: (context, index) => _buildProductCard(newestProduct[index]),
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
@@ -226,7 +227,8 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
       reviewCount: product.ratings?.count ?? 0,
       brand: product.brand ?? '',
       title: product.name,
-      originalPrice: product.defaultVariant?.price ?? 0,
+      originalPrice: (product.defaultVariant?.price ?? 0) * 1.1,
+      discountedPrice: product.defaultVariant?.price ?? 0,
       isNew: true,
       isFavorite: false,
       showToggleFavorite: false,
