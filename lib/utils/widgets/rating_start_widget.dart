@@ -11,26 +11,24 @@ class RatingStartWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-        padding: EdgeInsets.only(left: paddingLeft ?? 10, top: 8),
-        child: Row(children: [
-          for (int i = 0; i < 5; i++)
-            Icon(
-              i + 1 <= rating
-                  ? Icons.star
-                  : i < rating
-                      ? Icons.star_half
-                      : Icons.star_border,
-              size: iconFontSize ?? 14,
-              color: Colors.amber[400],
-            ),
-          if (reviewCount != null) ...[
-            const SizedBox(width: 5),
-            Text(
-              '($reviewCount)',
-              style: const TextStyle(color: Colors.grey, fontSize: 10),
-            )
-          ]
-        ]));
+    return Row(children: [
+      for (int i = 0; i < 5; i++)
+        Icon(
+          i + 1 <= rating
+              ? Icons.star
+              : i < rating
+                  ? Icons.star_half
+                  : Icons.star_border,
+          size: iconFontSize ?? 14,
+          color: Colors.amber[400],
+        ),
+      if (reviewCount != null) ...[
+        const SizedBox(width: 5),
+        Text(
+          '($reviewCount)',
+          style: const TextStyle(color: Colors.grey, fontSize: 10),
+        )
+      ]
+    ]);
   }
 }

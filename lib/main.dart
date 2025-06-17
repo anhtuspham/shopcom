@@ -62,8 +62,19 @@ class _MyDisplay extends State<MyDisplay> {
       debugShowCheckedModeBanner: false,
       routerConfig: system_router,
       theme: ThemeData(
-        scaffoldBackgroundColor: Colors.white,
+        fontFamily: 'EuclidCircularA',
+        scaffoldBackgroundColor: Colors.grey.shade100,
         appBarTheme: const AppBarTheme(backgroundColor: Colors.white, foregroundColor: Colors.black, elevation: 2),
+        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+          backgroundColor: Colors.white,
+          elevation: 20,
+          selectedItemColor: Colors.blueAccent,
+          unselectedItemColor: Colors.black,
+          selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
+          unselectedLabelStyle: TextStyle(fontWeight: FontWeight.normal),
+          showUnselectedLabels: true,
+          type: BottomNavigationBarType.fixed, // Đảm bảo tất cả các mục hiển thị rõ ràng
+        ),
         scrollbarTheme: ScrollbarThemeData(
           thumbColor: WidgetStateProperty.resolveWith<Color?>((states) {
             if (states.contains(WidgetState.hovered)) {

@@ -90,6 +90,17 @@ flutter:
     - assets/images/
     - assets/config/
     - assets/shopcom-chatbot-63b55d619964.json
+  fonts:
+    - family: EuclidCircularA
+      fonts:
+        - asset: assets/fonts/Euclid Circular A Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Euclid Circular A Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Euclid Circular A SemiBold.ttf
+          weight: 500
+        - asset: assets/fonts/Euclid Circular A Medium.ttf
+          weight: 300
 
   # To add assets to your application, add an assets section, like this:
   # assets:

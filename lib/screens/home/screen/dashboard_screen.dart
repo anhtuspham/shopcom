@@ -4,9 +4,11 @@ import '../../../data/model/product.dart';
 import '../../../providers/favorite_provider.dart';
 import '../../../providers/product_provider.dart';
 import '../../../providers/recommend_provider.dart';
+import '../../../utils/screen_size_checker.dart';
 import '../../../utils/widgets/error_widget.dart';
 import '../../../utils/widgets/loading_widget.dart';
 import '../../../utils/widgets/product_card.dart';
+import '../../shop/widgets/search_product.dart';
 
 class DashboardScreen extends ConsumerStatefulWidget {
   const DashboardScreen({super.key});
@@ -38,11 +40,13 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              const SearchProduct(),
               _bannerSection(),
-              _salesSection(),
-              _productSlideSection(),
+              // _salesSection(),
+              // _productSlideSection(),
               _newSection(),
               _productsGrid(state),
+              const SizedBox(height: 20)
             ],
           ),
         ),
@@ -205,8 +209,8 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: GridView.builder(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: ScreenSizeChecker.isTabletLandscape(context) ? 5 : 3,
           childAspectRatio: 0.7,
           mainAxisSpacing: 12,
           crossAxisSpacing: 6,
@@ -228,6 +232,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
       brand: product.brand ?? '',
       title: product.name,
       originalPrice: (product.defaultVariant?.price ?? 0) * 1.1,
+      discount: '10',
       discountedPrice: product.defaultVariant?.price ?? 0,
       isNew: true,
       isFavorite: false,
