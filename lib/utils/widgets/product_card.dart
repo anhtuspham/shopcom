@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shop_com/providers/currency_provider.dart';
 import 'package:shop_com/providers/favorite_provider.dart';
+import 'package:shop_com/utils/screen_size_checker.dart';
 import 'package:shop_com/utils/util.dart';
 import 'package:shop_com/utils/widgets/discount_badge.dart';
 import 'package:shop_com/utils/widgets/rating_start_widget.dart';
@@ -89,7 +90,7 @@ class _ProductCardState extends ConsumerState<ProductCard> with SingleTickerProv
                     ),
                     child: Container(
                       // alignment: Alignment.center,
-                      height: height * 0.25,
+                      height: height * (ScreenSizeChecker.isTabletLandscape(context) ? 0.25 : 0.15),
                       width: double.infinity,
                       child: Image.network(
                         widget.imageUrl,

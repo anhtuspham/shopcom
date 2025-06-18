@@ -59,6 +59,8 @@ dependencies:
   dialog_flowtter: ^0.3.3
   path_provider: ^2.1.5
   path: ^1.9.1
+  carousel_slider: ^5.0.0
+  animated_text_kit: ^4.2.2
 
 dev_dependencies:
   flutter_test:
@@ -88,6 +90,13 @@ flutter:
 
   assets:
     - assets/images/
+    - assets/images/banner-1.jpg
+    - assets/images/banner-2.jpg
+    - assets/images/b2.jpg
+    - assets/images/922_generated.jpg
+    - assets/images/9222_generated.png
+    - assets/images/banner-3.png
+    - assets/images/banner-4.png
     - assets/config/
     - assets/shopcom-chatbot-63b55d619964.json
   fonts:
@@ -101,6 +110,8 @@ flutter:
           weight: 500
         - asset: assets/fonts/Euclid Circular A Medium.ttf
           weight: 300
+        - asset: assets/fonts/Euclid Circular A Italic.ttf
+          weight: 400
 
   # To add assets to your application, add an assets section, like this:
   # assets:

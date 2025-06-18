@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 class ScreenSizeChecker {
   static const double _phoneBreakpoint = 600.0;
   static const double _tabletBreakpoint = 802.0;
-  static const double _desktopBreakpoint = 1300.0;
+  static const double _desktopBreakpoint = 1400.0;
 
   static bool isLandscapePhone(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;

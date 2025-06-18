@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../data/model/product.dart';
@@ -18,6 +19,8 @@ class DashboardScreen extends ConsumerStatefulWidget {
 }
 
 class _DashboardScreenState extends ConsumerState<DashboardScreen> {
+  int _currentPageIndex = 0;
+
   @override
   void initState() {
     super.initState();
@@ -35,58 +38,89 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
     if (state.isLoading) return const LoadingWidget();
     if (state.isError) return const ErrorsWidget();
     return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SearchProduct(),
-              _bannerSection(),
-              // _salesSection(),
-              // _productSlideSection(),
-              _newSection(),
-              _productsGrid(state),
-              const SizedBox(height: 20)
-            ],
-          ),
+      appBar: AppBar(
+        elevation: 0,
+        automaticallyImplyLeading: false,
+        title: const SearchProduct(),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // const SearchProduct(),
+            _bannerSection(),
+            // _salesSection(),
+            // _productSlideSection(),
+            _newSection(),
+            _productsGrid(state),
+            const SizedBox(height: 20)
+          ],
         ),
       ),
     );
   }
 
   Widget _bannerSection() {
+    final List<String> bannerImages = [
+      // 'assets/images/banner-1.jpg',
+      'assets/images/banner-2.jpg',
+      'assets/images/b2.jpg',
+      'assets/images/9222_generated.png',
+      'assets/images/banner-4.png'
+    ];
     return Stack(
       children: [
-        Container(
-          height: 200,
-          width: double.infinity,
-          decoration: BoxDecoration(
-            color: Colors.grey[300],
-            image: const DecorationImage(
-              image: AssetImage('assets/images/banner.jpg'),
-              fit: BoxFit.cover,
-            ),
+        CarouselSlider(
+          options: CarouselOptions(
+            height: 200,
+            autoPlay: true,
+            autoPlayInterval: const Duration(seconds: 5),
+            autoPlayAnimationDuration: const Duration(milliseconds: 800),
+            enlargeCenterPage: true,
+            aspectRatio: 16 / 9,
+            viewportFraction: 0.65,
+            enableInfiniteScroll: true,
+            initialPage: 1,
+            onPageChanged: (index, reason) {
+              setState(() {
+                _currentPageIndex = index;
+              });
+            },
           ),
-        ),
-        const Positioned(
-          bottom: 20,
-          left: 20,
-          child: Text(
-            'Welcome to SHOPCOM',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-              shadows: [
-                Shadow(
-                  blurRadius: 10,
-                  color: Colors.black,
-                  offset: Offset(2, 2),
+          items: bannerImages.map((imagePath) {
+            return Builder(builder: (context) {
+              return Container(
+                // height: 200,
+                margin: const EdgeInsets.symmetric(horizontal: 5),
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: Colors.grey[200],
+                  image: DecorationImage(
+                    image: AssetImage(imagePath),
+                    fit: ScreenSizeChecker.isTabletLandscape(context) ? BoxFit.fill : BoxFit.fill,
+                  ),
+                  boxShadow: [BoxShadow(color: Colors.black87.withValues(alpha: 0.1), blurRadius: 1, offset: const Offset(0, 2))]
                 ),
-              ],
+              );
+            });
+          },).toList(),
+        ),
+        Positioned(
+          right: 8,
+          bottom: 0,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+            decoration: BoxDecoration(
+              color: Colors.black.withValues(alpha: 0.6),
+              borderRadius: BorderRadius.circular(12)
+            ),
+            child: Text(
+              '${_currentPageIndex % bannerImages.length + 1}/${bannerImages.length}',
+              style: const TextStyle(fontSize: 14, color: Colors.white, fontWeight: FontWeight.bold),
             ),
           ),
-        ),
+        )
       ],
     );
   }

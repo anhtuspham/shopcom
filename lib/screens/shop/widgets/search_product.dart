@@ -63,6 +63,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shop_com/utils/screen_size_checker.dart';
 import '../../home/screen/search_screen.dart';
 import '../../../utils/color_value_key.dart';
 
@@ -84,39 +85,55 @@ class _SearchProductState extends ConsumerState<SearchProduct> {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.sizeOf(context).width;
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 14),
-      child: Row(
-        children: [
-          Expanded(
-            flex: 9,
-            child: TextField(
-              style: TextStyle(color: ColorValueKey.textColor),
-              controller: _searchController,
-              readOnly: true,
-              decoration: InputDecoration(
-                hintText: 'Tìm kiếm',
-                hintStyle: TextStyle(color: Colors.grey[600], fontWeight: FontWeight.w600, fontSize: 22),
-                contentPadding: const EdgeInsets.all(12),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                  borderSide: const BorderSide(color: Colors.transparent),
+      padding: const EdgeInsets.only(left: 5, right: 5, top: 10, bottom: 15),
+      child: TextField(
+        style: TextStyle(color: ColorValueKey.textColor),
+        controller: _searchController,
+        readOnly: true,
+        decoration: InputDecoration(
+            hintText: 'Tìm kiếm',
+            hintStyle: TextStyle(
+                color: Colors.grey[600],
+                fontWeight: FontWeight.w600,
+                fontSize: 22),
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(6.0),
+              borderSide: const BorderSide(color: Colors.transparent),
+            ),
+            prefixIcon: Icon(
+              Icons.search,
+              color: ColorValueKey.textColor,
+            ),
+            suffixIcon: GestureDetector(
+              onTap: () => context.push('/search'),
+              child: Container(
+                width: width * (ScreenSizeChecker.isTabletLandscape(context) ? 0.08 : 0.15),
+                margin: const EdgeInsets.all(4),
+                // padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(6),
+                  color: Colors.blueAccent,
                 ),
-                prefixIcon: Icon(
-                  Icons.search,
-                  color: ColorValueKey.textColor,
+                child: const Text(
+                  'Tìm kiếm',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14,
+                  ),
                 ),
               ),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const SearchScreen()),
-                );
-              },
             ),
-          ),
-          Expanded(flex: 1, child: IconButton(icon: const Icon(Icons.shopping_bag, size: 35,), onPressed: () => context.go('/cart'),))
-        ],
+        ),
+        onTap: () {
+          context.push('/search');
+        },
       ),
     );
   }

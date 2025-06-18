@@ -9,7 +9,7 @@ class ErrorPageWidget extends StatelessWidget{
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-      appBar: AppBar(title: const Text('Page not found')),
+      appBar: AppBar(title: const Text('Trang không tồn tại')),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

@@ -15,10 +15,26 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   double posX = 20;
-  double posY = 900;
+  double posY = 20;
+
+  void _updatePosition(DragUpdateDetails details) {
+    setState(() {
+      double newPosX = posX + details.delta.dx;
+      double newPosY = posY - details.delta.dy;
+
+      final screenWidth = MediaQuery.of(context).size.width;
+      posX = newPosX.clamp(0, screenWidth - 60);
+
+      final screenHeight = MediaQuery.of(context).size.height;
+      final bottomBarHeight = 60.0;
+      posY = newPosY.clamp(0, screenHeight - bottomBarHeight - 60);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    print('anhtu ${width} ${MediaQuery.of(context).size.height}');
     return Scaffold(
       body: Stack(
         children: [
@@ -26,14 +42,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
           Positioned(
             left: posX,
-            top: posY,
+            bottom: posY,
             child: GestureDetector(
-              onPanUpdate: (details) {
-                setState(() {
-                  posX += details.delta.dx;
-                  posY += details.delta.dy;
-                });
-              },
+              onPanUpdate: _updatePosition,
               onTap: () {
                 showModalBottomSheet(
                   context: context,

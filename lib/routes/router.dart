@@ -15,6 +15,7 @@ import 'package:shop_com/screens/auth/screen/verify_otp_screen.dart';
 import 'package:shop_com/screens/auth/screen/signup_screen.dart';
 import 'package:shop_com/screens/cart/screen/cart_screen.dart';
 import 'package:shop_com/screens/favorite/screen/favorite_screen.dart';
+import 'package:shop_com/screens/home/screen/search_screen.dart';
 import 'package:shop_com/screens/product_detail/screen/product_detail_screen.dart';
 import 'package:shop_com/screens/account/sub-screen/order_detail.dart';
 import 'package:shop_com/screens/account/sub-screen/order_screen.dart';
@@ -132,6 +133,11 @@ GoRouter genRoute() {
               path: '/setting',
               name: 'setting',
               builder: (context, state) => const SettingScreen(),
+            ),
+            GoRoute(
+              path: '/search',
+              name: 'search',
+              builder: (context, state) => const SearchScreen(),
             ),
             GoRoute(
                 path: '/shippingAddress',
