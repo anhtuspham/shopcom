@@ -121,7 +121,7 @@ class _OrderProductItemState extends ConsumerState<OrderProductItem> {
                         child: CustomHeaderInfo(
                           title: 'Unit',
                           value: widget.unit ?? '',
-                          headerWidth: 30,
+                          headerWidth: 40,
                           fontSize: 14,
                           valueFontWeight: FontWeight.w700,
                         )),

@@ -128,27 +128,27 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   }
 
   Widget _recommendSection() {
-    return const Padding(
-      padding: EdgeInsets.all(16.0),
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             'Gợi ý cho bạn',
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
             ),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           Text(
             'Dựa trên sở thích và lựa chọn gần đây của bạn',
             style: TextStyle(
               fontSize: 16,
-              color: Colors.grey,
+              color: Colors.grey[700],
             ),
           ),
-          SizedBox(height: 12),
+          const SizedBox(height: 12),
         ],
       ),
     );
@@ -236,27 +236,27 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   }
 
   Widget _newSection() {
-    return const Padding(
-      padding: EdgeInsets.all(16.0),
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             'Khám phá sản phẩm mới',
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
             ),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           Text(
             'Bộ sưu tập vừa cập bến, mời bạn khám phá',
             style: TextStyle(
               fontSize: 16,
-              color: Colors.grey,
+              color: Colors.grey[700],
             ),
           ),
-          SizedBox(height: 12),
+          const SizedBox(height: 12),
         ],
       ),
     );

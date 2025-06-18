@@ -42,20 +42,20 @@ class _OrderScreenState extends ConsumerState<OrderScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    TabBar(
+                    const TabBar(
                       labelPadding: EdgeInsets.zero,
-                      labelColor: Colors.white,
+                      labelColor: Colors.blue,
                       unselectedLabelColor: Colors.black,
                       labelStyle:
-                          const TextStyle(fontWeight: FontWeight.bold),
-                      indicator: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        color: Colors.black,
-                      ),
+                          TextStyle(fontWeight: FontWeight.bold),
+                      // indicator: BoxDecoration(
+                      //   borderRadius: BorderRadius.circular(5),
+                      //   color: Colors.black,
+                      // ),
                       unselectedLabelStyle:
-                          const TextStyle(fontWeight: FontWeight.w700),
+                          TextStyle(fontWeight: FontWeight.w700),
                       indicatorSize: TabBarIndicatorSize.label,
-                      tabs: const [
+                      tabs: [
                         Tab(
                             child: Padding(
                           padding: EdgeInsets.symmetric(

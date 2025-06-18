@@ -6,6 +6,7 @@ import 'package:shop_com/providers/currency_provider.dart';
 import 'package:shop_com/utils/util.dart';
 import 'package:shop_com/utils/widgets/appbar_widget.dart';
 import '../../../providers/product_detail_provider.dart';
+import '../../../utils/screen_size_checker.dart';
 import '../../../utils/widgets/button_widget.dart';
 import '../../../utils/widgets/error_widget.dart';
 import '../../../utils/widgets/loading_widget.dart';
@@ -179,6 +180,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(productDetailProvider(widget.id));
+    final height = MediaQuery.sizeOf(context).height;
     // final formattedPrice = formatPrice(usdPrice, currency)
 
     if (state.isLoading) return const LoadingWidget();
@@ -198,7 +200,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    _buildImageSlider(state.images),
+                    _buildImageSlider(state.images, height),
                     Padding(
                       padding: const EdgeInsets.all(16),
                       child: Column(
@@ -226,18 +228,19 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
     );
   }
 
-  Widget _buildImageSlider(List<String> images) {
+  Widget _buildImageSlider(List<String> images, double height) {
     return Column(
       children: [
-        AspectRatio(
-          aspectRatio: 1,
+        Container(
+          height: height * (ScreenSizeChecker.isTabletLandscape(context) ? 0.55 : 0.45),
+          width: double.infinity,
           child: PageView.builder(
             controller: _pageController,
             itemCount: images.length,
             onPageChanged: (index) => setState(() => currentPage = index),
             itemBuilder: (context, index) => Image.network(
               images[index],
-              fit: BoxFit.cover,
+              fit: BoxFit.contain,
               loadingBuilder: (context, child, loadingProgress) =>
               loadingProgress == null ? child : const LoadingWidget(),
               errorBuilder: (context, error, stackTrace) =>

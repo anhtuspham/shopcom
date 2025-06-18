@@ -35,7 +35,7 @@ class _ReviewScreenState extends ConsumerState<ReviewScreen> {
 
     return Scaffold(
       appBar: const AppBarWidget(
-        title: 'Rating and reviews',
+        title: 'Đánh giá sản phẩm',
       ),
       floatingActionButton: _buildFloatingButton(),
       body: SafeArea(
@@ -51,7 +51,7 @@ class _ReviewScreenState extends ConsumerState<ReviewScreen> {
                 child: reviewAsync.when(
               data: (reviews) {
                 if (reviews.isEmpty) {
-                  return const Center(child: Text('No review'));
+                  return const Center(child: Text('Chưa có đánh giá'));
                 }
                 return CustomerReviews(
                   reviews: reviews,
@@ -80,11 +80,11 @@ class _ReviewScreenState extends ConsumerState<ReviewScreen> {
                     left: 16,
                     right: 16,
                     top: 16,
-                    bottom: MediaQuery.of(context).viewInsets.bottom),
+                    bottom: MediaQuery.of(context).viewInsets.bottom + 20),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    const Text('What is your rate'),
+                    const Text('Bạn cảm thấy sản phẩm như thế nào'),
                     RatingBar(
                       initialRating: 0,
                       itemCount: 5,
@@ -101,7 +101,7 @@ class _ReviewScreenState extends ConsumerState<ReviewScreen> {
                       maxLines: 6,
                       decoration: const InputDecoration(
                           border: OutlineInputBorder(),
-                          label: Text('Your review')),
+                          label: Text('Đánh giá của bạn')),
                     ),
                     const Spacer(),
                     SizedBox(
@@ -124,7 +124,7 @@ class _ReviewScreenState extends ConsumerState<ReviewScreen> {
                           }
                           if (context.mounted) Navigator.pop(context);
                         },
-                        label: 'SEND REVIEW',
+                        label: 'GỬI ĐÁNH GIÁ',
                         style: const TextStyle(color: Colors.white),
                         buttonStyle: const ButtonStyle(
                             backgroundColor:
@@ -138,7 +138,7 @@ class _ReviewScreenState extends ConsumerState<ReviewScreen> {
           );
         },
         label: const Text(
-          'Write a review',
+          'Để lại bình luận',
           style: TextStyle(color: Colors.white),
         ),
         icon: const Icon(Icons.edit, color: Colors.white),

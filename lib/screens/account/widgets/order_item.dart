@@ -48,11 +48,11 @@ class _OrderItemState extends ConsumerState<OrderItem> {
             crossAxisAlignment: CrossAxisAlignment.start,
             spacing: 3,
             children: [
-              CustomHeaderInfo(title: 'OrderID', value: '#${widget.orderId}'),
+              CustomHeaderInfo(title: 'Mã đơn hàng', value: '#${widget.orderId}'),
               CustomHeaderInfo(
-                  title: 'Order time', value: widget.orderTime ?? ''),
+                  title: 'Thời gian đặt hàng', value: widget.orderTime ?? ''),
               CustomHeaderInfo(
-                  title: 'Total amount',
+                  title: 'Tổng tiền',
                   value: formatMoney(
                       widget.totalAmount ?? 0, ref.watch(currencyProvider)),
                   headerFontWeight: FontWeight.w700,
