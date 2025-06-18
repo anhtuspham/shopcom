@@ -60,7 +60,6 @@ dependencies:
   path_provider: ^2.1.5
   path: ^1.9.1
   carousel_slider: ^5.0.0
-  animated_text_kit: ^4.2.2
 
 dev_dependencies:
   flutter_test:

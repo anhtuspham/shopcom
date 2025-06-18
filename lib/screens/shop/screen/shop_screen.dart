@@ -5,6 +5,7 @@ import 'package:shop_com/providers/favorite_provider.dart';
 import 'package:shop_com/providers/product_provider.dart';
 import 'package:shop_com/screens/shop/widgets/search_product.dart';
 
+import '../../../utils/screen_size_checker.dart';
 import '../../../utils/widgets/error_widget.dart';
 import '../../../utils/widgets/loading_widget.dart';
 import '../../../utils/widgets/product_card.dart';
@@ -155,8 +156,8 @@ class _ShopScreenState extends ConsumerState<ShopScreen> {
             child: GridView.builder(
                 controller: _scrollController,
                 physics: const BouncingScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: ScreenSizeChecker.isTabletLandscape(context) ? 5 : 3,
                   childAspectRatio: 0.6,
                   mainAxisSpacing: 16,
                   crossAxisSpacing: 6,

@@ -185,26 +185,34 @@ class _ProductCardState extends ConsumerState<ProductCard> with SingleTickerProv
                       // Price
                       Row(
                         children: [
-                          Text(
-                            key: ValueKey('originalPrice_${widget.originalPrice}_${widget.id}'),
-                            formatMoney(widget.originalPrice, ref.watch(currencyProvider)),
-                            style: TextStyle(
-                              fontSize: 18,
-                              color: widget.discountedPrice != null ? Colors.grey : Colors.red,
-                              fontWeight: FontWeight.w600,
-                              decoration: widget.discountedPrice != null ? TextDecoration.lineThrough : TextDecoration.none,
-                              decorationThickness: 2.0,
-                              decorationColor: Colors.grey[600],
+                          Flexible(
+                            child: Text(
+                              key: ValueKey('originalPrice_${widget.originalPrice}_${widget.id}'),
+                              formatMoney(widget.originalPrice, ref.watch(currencyProvider)),
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: widget.discountedPrice != null ? Colors.grey : Colors.red,
+                                fontWeight: FontWeight.w600,
+                                decoration: widget.discountedPrice != null ? TextDecoration.lineThrough : TextDecoration.none,
+                                decorationThickness: 2.0,
+                                decorationColor: Colors.grey[600],
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
                           if (widget.discountedPrice != null) ...[
                             const SizedBox(width: 8),
-                            Text(
-                              formatMoney(widget.discountedPrice ?? 0, ref.watch(currencyProvider)),
-                              style: const TextStyle(
-                                fontSize: 18,
-                                color: Colors.red,
-                                fontWeight: FontWeight.bold,
+                            Flexible(
+                              child: Text(
+                                formatMoney(widget.discountedPrice ?? 0, ref.watch(currencyProvider)),
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ),
                           ],

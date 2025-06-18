@@ -93,7 +93,7 @@ class _SearchProductState extends ConsumerState<SearchProduct> {
         controller: _searchController,
         readOnly: true,
         decoration: InputDecoration(
-            hintText: 'Tìm kiếm',
+            hintText: 'Ưu đãi free ship',
             hintStyle: TextStyle(
                 color: Colors.grey[600],
                 fontWeight: FontWeight.w600,

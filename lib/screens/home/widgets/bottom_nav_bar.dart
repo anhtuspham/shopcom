@@ -10,7 +10,7 @@ class BottomNavBar extends StatelessWidget {
     return Container(
       decoration: const BoxDecoration(
         gradient: LinearGradient(colors: [Colors.blue, Colors.blueAccent], begin: Alignment.topCenter, end: Alignment.bottomCenter),
-        boxShadow: [BoxShadow(color: Colors.black87, blurRadius: 8, offset: Offset(0, 1))],
+        boxShadow: [BoxShadow(color: Colors.black87, blurRadius: 4, offset: Offset(0, 1))],
       ),
       child: BottomNavigationBar(
         iconSize: height * 0.035,

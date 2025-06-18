@@ -33,6 +33,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(productProvider);
+    final recommendProductState = ref.watch(recommendProductProvider);
     final favoriteState = ref.watch(favoriteProvider);
     final favoriteList = favoriteState.favorite.map((e) => e.id).toList();
     if (state.isLoading) return const LoadingWidget();
@@ -49,8 +50,9 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
           children: [
             // const SearchProduct(),
             _bannerSection(),
-            // _salesSection(),
+            _recommendSection(),
             // _productSlideSection(),
+            _productsRecommendGrid(recommendProductState),
             _newSection(),
             _productsGrid(state),
             const SizedBox(height: 20)
@@ -74,7 +76,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
           options: CarouselOptions(
             height: 200,
             autoPlay: true,
-            autoPlayInterval: const Duration(seconds: 5),
+            autoPlayInterval: const Duration(seconds: 4),
             autoPlayAnimationDuration: const Duration(milliseconds: 800),
             enlargeCenterPage: true,
             aspectRatio: 16 / 9,
@@ -125,14 +127,14 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
     );
   }
 
-  Widget _salesSection() {
+  Widget _recommendSection() {
     return const Padding(
       padding: EdgeInsets.all(16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Đề xuất',
+            'Gợi ý cho bạn',
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
@@ -140,7 +142,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
           ),
           SizedBox(height: 8),
           Text(
-            'Phù hợp với bạn',
+            'Dựa trên sở thích và lựa chọn gần đây của bạn',
             style: TextStyle(
               fontSize: 16,
               color: Colors.grey,
@@ -183,20 +185,23 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
               itemCount: products.length > 5 ? 5 : products.length,
               itemBuilder: (context, index) {
                 final product = products[index];
-                return ProductCard(
-                  id: product.id ?? '',
-                  imageUrl: product.defaultVariant?.images?[0] ?? '',
-                  isNew: false,
-                  rating: product.ratings?.average ?? 0,
-                  reviewCount: product.ratings?.count ?? 0,
-                  brand: product.brand ?? '',
-                  title: product.name,
-                  originalPrice: product.defaultVariant?.price ?? 0,
-                  isFavorite: ref
-                      .watch(favoriteProvider)
-                      .favorite
-                      .any((fav) => fav.id == product.id),
-                  showToggleFavorite: true,
+                return SizedBox(
+                  width: 160,
+                  child: ProductCard(
+                    id: product.id ?? '',
+                    imageUrl: product.defaultVariant?.images?[0] ?? '',
+                    isNew: false,
+                    rating: product.ratings?.average ?? 0,
+                    reviewCount: product.ratings?.count ?? 0,
+                    brand: product.brand ?? '',
+                    title: product.name,
+                    originalPrice: product.defaultVariant?.price ?? 0,
+                    isFavorite: ref
+                        .watch(favoriteProvider)
+                        .favorite
+                        .any((fav) => fav.id == product.id),
+                    showToggleFavorite: true,
+                  ),
                 );
               },
               separatorBuilder: (context, index) => const SizedBox(width: 8),
@@ -210,6 +215,26 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
     );
   }
 
+  Widget _productsRecommendGrid(RecommendProductState state) {
+    // final newestProduct = state.products.take(4).toList();
+    final newestProduct = state.product;
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: GridView.builder(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: ScreenSizeChecker.isTabletLandscape(context) ? 5 : 3,
+          childAspectRatio: 0.7,
+          mainAxisSpacing: 12,
+          crossAxisSpacing: 6,
+        ),
+        itemCount: state.product.length,
+        itemBuilder: (context, index) => _buildProductCard(newestProduct[index]),
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+      ),
+    );
+  }
+
   Widget _newSection() {
     return const Padding(
       padding: EdgeInsets.all(16.0),
@@ -217,7 +242,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'New',
+            'Khám phá sản phẩm mới',
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
@@ -225,7 +250,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
           ),
           SizedBox(height: 8),
           Text(
-            'Sản phẩm mới nhất của cửa hàng chúng tôi',
+            'Bộ sưu tập vừa cập bến, mời bạn khám phá',
             style: TextStyle(
               fontSize: 16,
               color: Colors.grey,

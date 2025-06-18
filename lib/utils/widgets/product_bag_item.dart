@@ -197,7 +197,7 @@ class _ProductBagItemState extends ConsumerState<ProductBagItem> {
                             fontWeight: FontWeight.bold,
                           )),
                       widget.isFavorite == true
-                          ? _buildAddCartButton()
+                          ? const Offstage()
                           : _buildQuantityControl()
                     ],
                   );
@@ -214,7 +214,7 @@ class _ProductBagItemState extends ConsumerState<ProductBagItem> {
     return IconButton(
       onPressed: () {},
       icon: Icon(
-        Icons.add_shopping_cart_sharp,
+        Icons.shopping_cart,
         color: Colors.blue[600],
       ),
       style: const ButtonStyle(
