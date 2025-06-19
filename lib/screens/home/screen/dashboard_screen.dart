@@ -227,7 +227,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
           mainAxisSpacing: 12,
           crossAxisSpacing: 6,
         ),
-        itemCount: state.product.length,
+        itemCount: state.product.length > 5 ? 5 : state.product.length,
         itemBuilder: (context, index) => _buildProductCard(newestProduct[index]),
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),

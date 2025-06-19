@@ -14,6 +14,7 @@ import 'package:shop_com/screens/auth/screen/renew_password_screen.dart';
 import 'package:shop_com/screens/auth/screen/verify_otp_screen.dart';
 import 'package:shop_com/screens/auth/screen/signup_screen.dart';
 import 'package:shop_com/screens/cart/screen/cart_screen.dart';
+import 'package:shop_com/screens/coupon/screen/coupon_screen.dart';
 import 'package:shop_com/screens/favorite/screen/favorite_screen.dart';
 import 'package:shop_com/screens/home/screen/search_screen.dart';
 import 'package:shop_com/screens/product_detail/screen/product_detail_screen.dart';
@@ -123,6 +124,11 @@ GoRouter genRoute() {
               path: '/favorite',
               name: 'favorite',
               builder: (context, state) => const FavoritesScreen(),
+            ),
+            GoRoute(
+              path: '/coupon',
+              name: 'coupon',
+              builder: (context, state) => const CouponsScreen(),
             ),
             GoRoute(
               path: '/account',

@@ -96,6 +96,7 @@ flutter:
     - assets/images/9222_generated.png
     - assets/images/banner-3.png
     - assets/images/banner-4.png
+    - assets/images/coupon.jpg
     - assets/config/
     - assets/shopcom-chatbot-63b55d619964.json
   fonts:

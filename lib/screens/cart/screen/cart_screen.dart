@@ -25,6 +25,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
   @override
   void initState() {
     super.initState();
+    _couponCode.value = '';
     Future.microtask(
       () {
         ref.read(cartProvider.notifier).fetchCart();
@@ -74,6 +75,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print('coupon ${_couponCode.value}');
     final state = ref.watch(cartProvider);
     if (state.isLoading) return const LoadingWidget();
     if (state.isError) return const ErrorsWidget();

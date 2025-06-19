@@ -240,12 +240,13 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
         CustomHeaderInfo(
             title: 'Tổng tiền hàng',
             value: formatMoney(cart.cart.totalPrice ?? 0, ref.watch(currencyProvider)),
-            valueFontWeight: FontWeight.w700),
+            valueFontWeight: FontWeight.w700, fontSize: 18,),
         const SizedBox(height: 8),
-        CustomHeaderInfo(title: 'Giảm giá', value: formatMoney(discount, ref.watch(currencyProvider)), valueFontWeight: FontWeight.w700,),
+        CustomHeaderInfo(title: 'Giảm giá', value: formatMoney(discount, ref.watch(currencyProvider)), valueFontWeight: FontWeight.w700, fontSize: 16,),
         const SizedBox(height: 8),
         const CustomHeaderInfo(
             title: 'Phí vận chuyển',
+            fontSize: 16,
             // value: formatMoney(1, ref.watch(currencyProvider)),
             value: 'Miễn phí',
             valueFontWeight: FontWeight.w700),
@@ -253,6 +254,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
         CustomHeaderInfo(
             title: 'Thành tiền',
             value: formatMoney(finalPrice, ref.watch(currencyProvider)),
+            fontSize: 18,
             valueFontWeight: FontWeight.w700),
       ],
     );

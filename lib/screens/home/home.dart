@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shop_com/screens/home/widgets/bottom_nav_bar.dart';
 
 import '../../utils/color_value_key.dart';
@@ -34,6 +35,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
+
+    final isHomePage = GoRouter.of(context).state.matchedLocation == '/home';
     return Scaffold(
       body: Stack(
         children: [
@@ -72,6 +75,49 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
           ),
+
+          if (isHomePage)
+            Positioned(
+              right: 16,
+              bottom: 16,
+              child: GestureDetector(
+                onTap: () {
+                  context.go('/coupon');
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Xem ưu đãi giảm giá!'), backgroundColor: Colors.green,),
+                  );
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  decoration: BoxDecoration(
+                    color: Colors.redAccent, // Màu nổi bật
+                    borderRadius: BorderRadius.circular(20), // Bo góc
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Colors.black26,
+                        blurRadius: 6,
+                        offset: Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: const Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.local_offer, color: Colors.white, size: 20),
+                      SizedBox(width: 8),
+                      Text(
+                        'Voucher giảm giá',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
         ],
       ),
       bottomNavigationBar: const BottomNavBar(),

@@ -183,12 +183,12 @@ class _ShopScreenState extends ConsumerState<ShopScreen> {
   }
 
   Widget _buildDropdown() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
+    return const Padding(
+      padding: EdgeInsets.symmetric(vertical: 8),
       child: Column(
         children: [
-          ElevatedButton(onPressed: null, child: const Text('Cao nhất')),
-          ElevatedButton(onPressed: null, child: const Text('Thấp nhất'))
+          ElevatedButton(onPressed: null, child: Text('Cao nhất')),
+          ElevatedButton(onPressed: null, child: Text('Thấp nhất'))
         ],
       ),
     );
